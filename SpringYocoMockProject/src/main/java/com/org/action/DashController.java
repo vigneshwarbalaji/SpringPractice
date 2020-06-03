@@ -126,29 +126,56 @@ public class DashController{
 			result = dao.createUserAccDetails(accDet);
 			
 			//System.out.println("result"+result);
+			List<UserAccountDetail>userList = dao.getAccountListByMail(email);
 			
-			if(result == true)
+			for(UserAccountDetail x : userList)
 			{
-				UserAccountDetail userAcc = dao.getAccountDetailByMail(email);
-				
-				long millisec = Long.parseLong(userAcc.getClockIn());
+			
+				long inGrpMillisec = Long.parseLong(x.getClockIn());
 
 				
-				String formattedTime = dao.milliSecToTimeConversion(millisec);
+				String inGrpFormattedTime = dao.milliSecToTimeConversion(inGrpMillisec);
 
-				userAcc.setClockIn(formattedTime);
-				userAcc.setClockOut("ongoing");
+				x.setClockIn(inGrpFormattedTime);				
 				
-				String json = new Gson().toJson(userAcc);
+				if(x.getClockOut() != null)
+				{
+					long outGrpMillisec = Long.parseLong(x.getClockOut());
+					String outGrpFormattedTime = dao.milliSecToTimeConversion(outGrpMillisec);
+					x.setClockOut(outGrpFormattedTime);
+				}
+				else
+				{
+					x.setClockOut("ongoing");
+				}
 				
-				return json;
 			}
+			map.put("userList", userList);
 			
-			map.put("value","false");
+			String object = new ObjectMapper().writeValueAsString(map);
+
+//			if(result == true)
+//			{
+//				UserAccountDetail userAcc = dao.getAccountDetailByMail(email);
+//				
+//				long millisec = Long.parseLong(userAcc.getClockIn());
+//
+//				
+//				String formattedTime = dao.milliSecToTimeConversion(millisec);
+//
+//				userAcc.setClockIn(formattedTime);
+//				userAcc.setClockOut("ongoing");
+//				
+//				String json = new Gson().toJson(userAcc);
+//				
+//				return json;
+//			}
+//			
+//			map.put("value","false");
 				
-			String obj = new ObjectMapper().writeValueAsString(map);
+//			String obj = new ObjectMapper().writeValueAsString(map);
 			
-			return obj;
+			return object;
 	
 }
 
@@ -182,34 +209,71 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 		
 		result = dao.createUserAccDetails(existingUser);
 		
-		if(result == true)
+		
+		List<UserAccountDetail>userList = dao.getAccountListByMail(email);
+		
+		for(UserAccountDetail x : userList)
 		{
-			UserAccountDetail userAcc = dao.getAccountDetailByMail(email);
-			
-			long inMillisec = Long.parseLong(userAcc.getClockIn());
+//			System.out.println(x.getEmail());
+//			System.out.println(x.getProject());
+//			System.out.println(x.getTaskDescription());
+//			
+			long inGrpMillisec = Long.parseLong(x.getClockIn());
 
 			
-			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
+			String inGrpFormattedTime = dao.milliSecToTimeConversion(inGrpMillisec);
 
-			userAcc.setClockIn(inFormattedTime);
-			
-			long outMillisec = Long.parseLong(userAcc.getClockOut());
+			x.setClockIn(inGrpFormattedTime);
 
 			
-			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+//			System.out.println(x.getClockIn());
+			
+			long outGrpMillisec = Long.parseLong(x.getClockOut());
 
-			userAcc.setClockOut(outFormattedTime);
 			
-			String json = new Gson().toJson(userAcc);
+			String outGrpFormattedTime = dao.milliSecToTimeConversion(outGrpMillisec);
+
+			x.setClockOut(outGrpFormattedTime);
 			
-			return json;
+//			System.out.println(x.getClockOut());
+//			System.out.println();
+			
+			
 		}
+		map.put("userList", userList);
 		
-		map.put("value","false");
+		String object = new ObjectMapper().writeValueAsString(map);
 		
-		String obj = new ObjectMapper().writeValueAsString(map);
+//		if(result == true)
+//		{
+//			UserAccountDetail userAcc = dao.getAccountDetailByMail(email);
+//			
+//			long inMillisec = Long.parseLong(userAcc.getClockIn());
+//
+//			
+//			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
+//
+//			userAcc.setClockIn(inFormattedTime);
+//			
+//			long outMillisec = Long.parseLong(userAcc.getClockOut());
+//
+//			
+//			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+//
+//			userAcc.setClockOut(outFormattedTime);
+//			
+//			String json = new Gson().toJson(userAcc);
+//			
+//			return json;
+//		}
 		
-		return obj;
+		//map.put("value","false");
+		
+//		String obj = new ObjectMapper().writeValueAsString(map);
+		
+		//System.out.println(object);
+		
+		return object;
 	}
 	catch (Exception e) {
 		// TODO: handle exception

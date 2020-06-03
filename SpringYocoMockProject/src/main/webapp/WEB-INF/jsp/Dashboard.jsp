@@ -68,22 +68,22 @@
 	-->
 <script src="js/ClockResponse.js"></script>
     <Table class="tabcont">
-        <tr>
+        <tr id = "rows">
             <th id="th1">Add Task Description</th>
             <th id="th2">Project</th>
             <th id="th3">clock-In</th>
             <th id="th4">clock-out</th>
             <th id="th5">Total Hours</th>
         </tr>
-        <tr>
-            <td id = "one"></td>
+        <!-- <tr id = "rows">
+           <td id = "one"></td>
             <td id = two></td>
             <td id = three></td>
             <td id = "four"></td>
             <td id = "five">
                 <span class="material-icons" id="">create</span>
             </td>
-        </tr>
+        </tr>-->
        <!-- <tr>
             <td>Log In Feature</td>
             <td>Mock Design</td>

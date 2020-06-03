@@ -79,6 +79,8 @@ $.ajax({
     			$('#two').html(data.user.taskDescription);
     			$('#three').html(data.user.clockIn);
     			$('#four').html(data.user.clockOut);
+    			
+//    			$('#rows').append('<tr><td></td></tr>')
     		}
     	else
     		{
@@ -102,6 +104,7 @@ $('#clockInInput').click(function(){
 	$.post('http://localhost:8080/clockIn', {project: $('#project').val(),descript: $('#descript').val()}, 
 			function (data, textStatus, jqXHR) {
 		
+		//console.log(data.userList);
 		if(data.value == 'false')
 			{
 				$('#warn').html('<h6>You had already clocked in</h6>');
@@ -109,63 +112,21 @@ $('#clockInInput').click(function(){
 		else
 			{
 				//$('#name').html(data.value);
-				$('#one').html(data.project);
-				$('#two').html(data.taskDescription);
-				$('#three').html(data.clockIn);
-				$('#four').html(data.clockOut);
+//				$('#one').html(data.project);
+//				$('#two').html(data.taskDescription);
+//				$('#three').html(data.clockIn);
+//				$('#four').html(data.clockOut);
+			
+			for(let i = 0;i < data.userList.length;i++)
+			{
+				$('#rows').after('<tr><td>'+data.userList[i].project+'</td><td>'+data.userList[i].taskDescription+'</td><td>'+data.userList[i].clockIn+'</td><td>'+data.userList[i].clockOut+'</td></tr>');
+//				$('<tr><td>'+data.userList[i].project+'</td><td>'+data.userList[i].taskDescription+'</td><td>'+data.userList[i].clockIn+'</td><td>'+data.userList[i].clockOut+'</td></tr>').insertAfter($(this).closest('tr'));
+			}
 			}
 		
 	},'json');
 });
 
-
-/*$('#clockOutInput').click(function(){
-	
-	$.put('http://localhost:8080/clockOut', 
-			function (data, textStatus, jqXHR) {
-		
-		if(data.value == 'false')
-			{
-				$('#warn').html('<h6>You had already clocked out</h6>');
-			}
-		else if(data.checkIfUserClockedIn == 'false'){
-			$('#warn').html('<h6>Please clock In first</h6>');
-		}
-		else
-			{
-				//$('#name').html(data.value);
-				$('#one').html(data.project);
-				$('#two').html(data.taskDescription);
-				$('#three').html(data.clockIn);
-			
-			$('#four').html(data.clockOut);
-			}
-		
-	},'json');
-});*/
-
-//$.ajax({
-//    type: 'PUT',
-//    url: 'http://localhost:8080/clockOut',
-//    success: function (data) {
-//    	if(data.value == 'false')
-//		{
-//			$('#warn').html('<h6>You had already clocked out</h6>');
-//		}
-//	else if(data.checkIfUserClockedIn == 'false'){
-//		$('#warn').html('<h6>Please clock In first</h6>');
-//	}
-//	else
-//		{
-//		//$('#name').html(data.value);
-//		$('#one').html(data.project);
-//		$('#two').html(data.taskDescription);
-//		$('#three').html(data.clockIn);
-//	
-//	$('#four').html(data.clockOut);
-//		}
-//    }
-//});
 
 
 $(function () {
@@ -180,6 +141,7 @@ $(function () {
             success: function (data, status, xhr) {
 //                $('p').append('status: ' + status + ', data: ' + data);
             	
+            	//console.log(data.userList);
             	
             	if(data.value == 'false')
     			{
@@ -190,12 +152,17 @@ $(function () {
     		}
     		else
     			{
-    				//$('#name').html(data.value);
-    				$('#one').html(data.project);
-    				$('#two').html(data.taskDescription);
-    				$('#three').html(data.clockIn);
+//    				$('#one').html(data.project);
+//    				$('#two').html(data.taskDescription);
+//    				$('#three').html(data.clockIn);
+//    				$('#four').html(data.clockOut);
     			
-    			$('#four').html(data.clockOut);
+    				for(let i = 0;i < data.userList.length;i++)
+    				{
+//    					$('#rows').after().remove();
+    					$('#rows').after('<tr><td>'+data.userList[i].project+'</td><td>'+data.userList[i].taskDescription+'</td><td>'+data.userList[i].clockIn+'</td><td>'+data.userList[i].clockOut+'</td></tr>');
+//    					$('<tr><td>'+data.userList[i].project+'</td><td>'+data.userList[i].taskDescription+'</td><td>'+data.userList[i].clockIn+'</td><td>'+data.userList[i].clockOut+'</td></tr>').insertAfter($(this).closest('tr'));
+    				}
     			}
             	
             	
@@ -205,69 +172,3 @@ $(function () {
     });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//function clockOutFunc()
-//{
-//	var xhr = new XMLHttpRequest();
-//
-//	//var action = "ClockIn";
-//	//var project = document.getElementById("project").value;
-//	//var descript = document.getElementById("descript").value;
-//	
-//	
-//    xhr.open('PATCH','http://localhost:8080/DashController', true);
-//   // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-//    
-//    //xhr.send("name="+name+"&email="+email+"&pass="+pass+"&rePass="+rePass);
-//
-//    xhr.send();
-//
-//    xhr.onload = function() {
-//    	
-//        let responseobj = JSON.parse(this.response);
-//        
-//        
-//        if (this.status == 200) {
-//        	
-//        	console.log(responseobj);
-////        		document.getElementById('one').innerHTML = responseobj.project;
-////        		document.getElementById('two').innerHTML = responseobj.taskDescription;
-////        		document.getElementById('three').innerHTML = responseobj.clockIn;
-//        	if(responseobj == 'false')
-//        		{
-//        		document.getElementById('warn').innerHTML = "<h6> You must clock in first</h6>";
-//        		}
-//        	else
-//        		{
-//        		document.getElementById('one').innerHTML = responseobj.project;
-//        		document.getElementById('two').innerHTML = responseobj.taskDescription;
-//        		document.getElementById('three').innerHTML = responseobj.clockIn;
-//        		document.getElementById('four').innerHTML = responseobj.clockOut;
-//        		}
-//        	
-//        } else if (this.status == 404) {
-//            document.getElementById('name').innerHTML = '<h1>Not Found -- 404 Error</h1>'
-//        }
-//    }
-//}

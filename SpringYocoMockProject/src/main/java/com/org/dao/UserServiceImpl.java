@@ -97,4 +97,11 @@ public class UserServiceImpl implements UserService
         
         return existingUser;
 	}*/
+	
+	public List<UserAccountDetail> getAccountListByMail(String email)
+	{
+		List<UserAccountDetail>UserDetailList = ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email ==",email).list();
+		return UserDetailList;
+	}
+	
 }
