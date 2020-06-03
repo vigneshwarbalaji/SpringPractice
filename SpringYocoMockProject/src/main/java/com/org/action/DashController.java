@@ -52,6 +52,47 @@ public class DashController{
 	
 	UserService dao = new UserServiceImpl();
 	
+	@RequestMapping(value = "/GetEntry",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String GetEntry(HttpServletRequest request,HttpServletResponse response) throws IOException
+	{
+		HttpSession session = request.getSession(true);
+		String email = session.getAttribute("email").toString();
+		UserAccountDetail existingUser = dao.getAccountDetailByMail(email);
+		
+		HashMap<String,Object>map = new HashMap<String, Object>();
+		
+		if(existingUser != null)
+		{
+			long inMillisec = Long.parseLong(existingUser.getClockIn());
+
+			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
+
+			existingUser.setClockIn(inFormattedTime);
+			
+			if(existingUser.getClockOut() != null)
+			{
+				long outMillisec = Long.parseLong(existingUser.getClockOut());
+
+				String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+
+				existingUser.setClockOut(outFormattedTime);
+			}
+			else
+			{
+				existingUser.setClockOut("ongoing");
+				
+				System.out.println(existingUser.getClockOut());
+			}
+
+		}
+		
+		map.put("user", existingUser);
+		
+		String obj = new ObjectMapper().writeValueAsString(map);
+		
+		return obj;
+	}
+	
 	@RequestMapping(value = "/clockIn",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String clockIn(HttpServletRequest request,HttpServletResponse response) throws IOException
 	{
@@ -77,7 +118,7 @@ public class DashController{
 			String milliSeconds = String.valueOf(System.currentTimeMillis());
 			
 			accDet.setClockIn(milliSeconds);
-			
+			//accDet.setClockOut("on going");
 			//UserService dao = (UserService) this.getServletContext().getAttribute("dao");
 			
 
@@ -96,6 +137,7 @@ public class DashController{
 				String formattedTime = dao.milliSecToTimeConversion(millisec);
 
 				userAcc.setClockIn(formattedTime);
+				userAcc.setClockOut("ongoing");
 				
 				String json = new Gson().toJson(userAcc);
 				
@@ -112,7 +154,7 @@ public class DashController{
 
 
 
-@RequestMapping(value = "/clockOut",method = RequestMethod.PATCH,produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/clockOut",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
 public @ResponseBody String clockOut(HttpServletRequest request,HttpServletResponse response) throws IOException
 {
 	
@@ -124,16 +166,50 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 	String name = session.getAttribute("name").toString();
 	String email = session.getAttribute("email").toString();
 	
-	boolean checkIfUserClockedIn;
+	//boolean checkIfUserClockedIn = true;
 	//UserAccountDetail accDet = new UserAccountDetail();
 	
 	try {
 		UserAccountDetail existingUser = dao.getAccountDetailByMail(email);
 		
+		existingUser.setEmail(existingUser.getEmail());
+		existingUser.setClockIn(existingUser.getClockIn());
+		existingUser.setProject(existingUser.getProject());
+		existingUser.setTaskDescription(existingUser.getTaskDescription());
+		
 		String milliSeconds = String.valueOf(System.currentTimeMillis());
 		existingUser.setClockOut(milliSeconds);
 		
 		result = dao.createUserAccDetails(existingUser);
+		
+		if(result == true)
+		{
+			UserAccountDetail userAcc = dao.getAccountDetailByMail(email);
+			
+			long inMillisec = Long.parseLong(userAcc.getClockIn());
+
+			
+			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
+
+			userAcc.setClockIn(inFormattedTime);
+			
+			long outMillisec = Long.parseLong(userAcc.getClockOut());
+
+			
+			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+
+			userAcc.setClockOut(outFormattedTime);
+			
+			String json = new Gson().toJson(userAcc);
+			
+			return json;
+		}
+		
+		map.put("value","false");
+		
+		String obj = new ObjectMapper().writeValueAsString(map);
+		
+		return obj;
 	}
 	catch (Exception e) {
 		// TODO: handle exception

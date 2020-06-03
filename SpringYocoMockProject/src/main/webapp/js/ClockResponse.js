@@ -4,6 +4,7 @@
 
 
 //function clockInFunc()
+
 //{
 //	var xhr = new XMLHttpRequest();
 //
@@ -57,7 +58,42 @@
 
 //DashController
 
+//$("#clockOutInput").hide();
+
+$.ajax({
+	type: 'get',
+    url: 'http://localhost:8080/GetEntry',
+    success: function (data, status, xhr) {
+//        $('p').append('status: ' + status + ', data: ' + data);
+    	
+			//$('#name').html(data.value);
+    	
+    	if(data.user.clockOut == "ongoing")
+    		{
+    			$("#clockInInput").hide();
+    			$('#one').html(data.user.project);
+    			$('#two').html(data.user.taskDescription);
+    			$('#three').html(data.user.clockIn);
+    			$('#four').html(data.user.clockOut);
+    		}
+    	else
+    		{
+    		$("#clockOutInput").hide();
+			$('#one').html(data.user.project);
+			$('#two').html(data.user.taskDescription);
+			$('#three').html(data.user.clockIn);
+			$('#four').html(data.user.clockOut);
+    		}
+			
+    },
+    dataType : 'json'
+});
+
+
 $('#clockInInput').click(function(){
+	
+	$("#clockInInput").hide();
+	$("#clockOutInput").show();
 	
 	$.post('http://localhost:8080/clockIn', {project: $('#project').val(),descript: $('#descript').val()}, 
 			function (data, textStatus, jqXHR) {
@@ -72,31 +108,118 @@ $('#clockInInput').click(function(){
 				$('#one').html(data.project);
 				$('#two').html(data.taskDescription);
 				$('#three').html(data.clockIn);
+				$('#four').html(data.clockOut);
 			}
 		
 	},'json');
 });
 
 
-$('#clockOutInput').click(function(){
+/*$('#clockOutInput').click(function(){
 	
-	$.post('http://localhost:8080/clockOut', 
+	$.put('http://localhost:8080/clockOut', 
 			function (data, textStatus, jqXHR) {
 		
 		if(data.value == 'false')
 			{
-//				$('#warn').html('<h6>You had already clocked in</h6>');
+				$('#warn').html('<h6>You had already clocked out</h6>');
 			}
+		else if(data.checkIfUserClockedIn == 'false'){
+			$('#warn').html('<h6>Please clock In first</h6>');
+		}
 		else
 			{
 				//$('#name').html(data.value);
-//				$('#one').html(data.project);
-//				$('#two').html(data.taskDescription);
-//				$('#three').html(data.clockIn);
+				$('#one').html(data.project);
+				$('#two').html(data.taskDescription);
+				$('#three').html(data.clockIn);
+			
+			$('#four').html(data.clockOut);
 			}
 		
 	},'json');
+});*/
+
+//$.ajax({
+//    type: 'PUT',
+//    url: 'http://localhost:8080/clockOut',
+//    success: function (data) {
+//    	if(data.value == 'false')
+//		{
+//			$('#warn').html('<h6>You had already clocked out</h6>');
+//		}
+//	else if(data.checkIfUserClockedIn == 'false'){
+//		$('#warn').html('<h6>Please clock In first</h6>');
+//	}
+//	else
+//		{
+//		//$('#name').html(data.value);
+//		$('#one').html(data.project);
+//		$('#two').html(data.taskDescription);
+//		$('#three').html(data.clockIn);
+//	
+//	$('#four').html(data.clockOut);
+//		}
+//    }
+//});
+
+
+$(function () {
+    $('#clockOutInput').on('click', function () {
+
+    	$("#clockInInput").show();
+    	$("#clockOutInput").hide();
+    	//var Status = $(this).val();
+        $.ajax({
+        	type: 'PUT',
+            url: 'http://localhost:8080/clockOut',
+            success: function (data, status, xhr) {
+//                $('p').append('status: ' + status + ', data: ' + data);
+            	
+            	
+            	if(data.value == 'false')
+    			{
+    				$('#warn').html('<h6>You had already clocked out</h6>');
+    			}
+    		else if(data.checkIfUserClockedIn == 'false'){
+    			$('#warn').html('<h6>Please clock In first</h6>');
+    		}
+    		else
+    			{
+    				//$('#name').html(data.value);
+    				$('#one').html(data.project);
+    				$('#two').html(data.taskDescription);
+    				$('#three').html(data.clockIn);
+    			
+    			$('#four').html(data.clockOut);
+    			}
+            	
+            	
+            },
+            dataType : 'json'
+        });
+    });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

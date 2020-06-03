@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.objectify.ObjectifyService;
 import com.org.dao.UserService;
 import com.org.dao.UserServiceImpl;
+import com.org.model.UserAccountDetail;
 import com.org.model.UserAccounts;
 
 
@@ -39,19 +40,25 @@ public class ControllerServlet  {
 	//private static final long serialVersionUID = 1L;
 	UserService dao = new UserServiceImpl();
 	
-/*
-	static{
-		ObjectifyService.init();
-	    ObjectifyService.register(UserAccounts.class);
-	}
-*/
+//	@RequestMapping(value = "/SessionController",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+//	public @ResponseBody String Session(HttpServletRequest request,HttpServletResponse response) throws IOException
+//	{
+//		HttpSession session = request.getSession(false);
+//		
+//		if(session != null)
+//		{
+//			return "/Dashboard";
+//		}
+//		
+//		return "/ControllerServlet";
+//	}
 	
 	@RequestMapping(value = "/ControllerServlet",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String signIn(HttpServletRequest request,HttpServletResponse response) throws IOException
 	{
 				
 		String email = request.getParameter("email").trim();
-		System.out.println(email);
+//		System.out.println(email);
 		String pass = request.getParameter("pass").trim();
 		
 		HashMap<String,Object>map = new HashMap<String, Object>();
@@ -91,6 +98,19 @@ public class ControllerServlet  {
 				map.put("value","true");
 				
 				//return "/Dashboard";
+				
+//				UserAccountDetail userdetail = dao.getAccountDetailByMail(email);
+				
+//				ObjectMapper objectMapper = new ObjectMapper();
+
+				
+//				objectMapper.writeValueAsString(userdetail);
+//				
+//				return objectMapper; 
+				
+//				map.put("userdetail", userdetail);
+				
+//				map.put("userdetail",userdetail);
 			}
 		}
 		

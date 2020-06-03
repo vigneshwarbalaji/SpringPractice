@@ -57,11 +57,12 @@ public class UserServiceImpl implements UserService
 //		if(existingUser == null)
 //		{
 		//try {
-			if(existingUser == null)
-			{	ObjectifyService.ofy().save().entity(accDetails);
+//			if(existingUser.getClockIn() == null)
+//			{	
+				ObjectifyService.ofy().save().entity(accDetails);
 				return true;
-			}
-		return false;
+//			}
+//		return false;
 //		}
 //		else if(existingUser.getClockOut() == null)
 //		{

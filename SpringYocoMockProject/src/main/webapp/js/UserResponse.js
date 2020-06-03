@@ -104,7 +104,7 @@ $('#logSub').click(function(){
 		
 		if(data.value == 'true')
 			{
-			window.location.href = '/Dashboard';
+				window.location.href = '/Dashboard';
 			}
 		else
 			{
