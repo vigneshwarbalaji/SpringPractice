@@ -5,6 +5,7 @@
 
 //function clockInFunc()
 
+
 //{
 //	var xhr = new XMLHttpRequest();
 //
@@ -67,8 +68,11 @@ $.ajax({
 //        $('p').append('status: ' + status + ', data: ' + data);
     	
 			//$('#name').html(data.value);
-    	
-    	if(data.user.clockOut == "ongoing")
+    	if(data.user == null)
+    		{
+    		$("#clockOutInput").hide();
+    		}
+    	else if(data.user.clockOut == "ongoing")
     		{
     			$("#clockInInput").hide();
     			$('#one').html(data.user.project);
