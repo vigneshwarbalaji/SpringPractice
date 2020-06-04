@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService
 	
 	public UserAccountDetail getAccountDetailByMail(String email)
 	{
-		UserAccountDetail existingUser=ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email",email).first().now();
+		UserAccountDetail existingUser=ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email",email).filter("clockOut",null).first().now();
         
         return existingUser;
 	}

@@ -89,7 +89,7 @@ $('#signSub').click(function(){
 			}
 		else
 			{
-				$('#name').html(data.value);
+				$('#name').html('<h6>'+data.value+'<h6>');
 			}
 		
 	},'json');
@@ -108,7 +108,7 @@ $('#logSub').click(function(){
 			}
 		else
 			{
-				$('#name').html(data.value);
+				$('#name').html('<h6>'+data.value+'</h6>');
 			}
 		
 	},'json');

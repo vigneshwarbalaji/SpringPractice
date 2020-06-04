@@ -67,7 +67,7 @@ public class ControllerServlet  {
 		
 		if(email.isEmpty()||pass.isEmpty())
 		{
-			map.put("value","<h6>please fill all the details</h6>");
+			map.put("value","please fill all the details");
 			//response.getWriter().print("<h6>please fill all the details</h6>");
 		}
 		else
@@ -79,12 +79,12 @@ public class ControllerServlet  {
 			
 			if(userAcc == null)
 			{
-				map.put("value","<h6>User doesnot exist.Please register.</h6>");
+				map.put("value","User doesnot exist.Please register.");
 				//response.getWriter().print("<h6>User doesnot exist.Please register.</h6>");
 			}
 			else if(!(userAcc.getPassword().equals(pass)))
 			{
-				map.put("value","<h6>Password incorrect</h6>");
+				map.put("value","Password incorrect");
 				//response.getWriter().print("<h6>Password incorrect</h6>");
 			}
 			else
@@ -140,17 +140,17 @@ public class ControllerServlet  {
 		if((name.isEmpty()||email.isEmpty()||
 				pass.isEmpty() ||rePass.isEmpty()))
 		{
-			map.put("value","<h6>please fill all the details</h6>");
+			map.put("value","please fill all the details");
 			//response.getWriter().print("<h6>please fill all the details</h6>");
 		}
 		else if(!(pass.equals(rePass)) || passLength != rePassLength)
 		{
-			map.put("value","<h6>Password doesn't match</h6>");
+			map.put("value","Password doesn't match");
 			//response.getWriter().print("<h6>Password doesn't match</h6>");
 		}
 		else if(pass.length() < 6 || rePass.length() < 6)
 		{
-			map.put("value","<h6>Password must atleast be of length 6</h6>");
+			map.put("value","Password must atleast be of length 6");
 			//response.getWriter().print("<h6>Password must atleast be of length 6</h6>");
 		}
 		else
@@ -178,7 +178,7 @@ public class ControllerServlet  {
 			}
 			else
 			{
-				map.put("value","<h6>Account Already exists</h6>"+"<br>");
+				map.put("value","Account Already exists"+"<br>");
 				//response.getWriter().print("<h6>Account Already exists</h6>"+"<br>");
 			}
 			

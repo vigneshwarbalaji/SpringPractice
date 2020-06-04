@@ -57,35 +57,43 @@ public class DashController{
 	{
 		HttpSession session = request.getSession(true);
 		String email = session.getAttribute("email").toString();
-		UserAccountDetail existingUser = dao.getAccountDetailByMail(email);
+//		UserAccountDetail existingUser = dao.getAccountDetailByMail(email);
+		
+		List<UserAccountDetail>existingUser = dao.getAccountListByMail(email);
+		
 		
 		HashMap<String,Object>map = new HashMap<String, Object>();
 		
-		if(existingUser != null)
+		
+		for(UserAccountDetail userList: existingUser)
 		{
-			long inMillisec = Long.parseLong(existingUser.getClockIn());
-
-			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
-
-			existingUser.setClockIn(inFormattedTime);
-			
-			if(existingUser.getClockOut() != null)
+			if(userList != null)
 			{
-				long outMillisec = Long.parseLong(existingUser.getClockOut());
+				long inMillisec = Long.parseLong(userList.getClockIn());
 
-				String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+				String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
 
-				existingUser.setClockOut(outFormattedTime);
-			}
-			else
-			{
-				existingUser.setClockOut("ongoing");
+				userList.setClockIn(inFormattedTime);
 				
-				System.out.println(existingUser.getClockOut());
+				if(userList.getClockOut() != null)
+				{
+					long outMillisec = Long.parseLong(userList.getClockOut());
+
+					String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+
+					userList.setClockOut(outFormattedTime);
+				}
+				else
+				{
+					userList.setClockOut("ongoing");
+					
+					System.out.println(userList.getClockOut());
+				}
+
 			}
 
 		}
-		
+				
 		map.put("user", existingUser);
 		
 		String obj = new ObjectMapper().writeValueAsString(map);
@@ -126,56 +134,58 @@ public class DashController{
 			result = dao.createUserAccDetails(accDet);
 			
 			//System.out.println("result"+result);
-			List<UserAccountDetail>userList = dao.getAccountListByMail(email);
-			
-			for(UserAccountDetail x : userList)
-			{
-			
-				long inGrpMillisec = Long.parseLong(x.getClockIn());
-
-				
-				String inGrpFormattedTime = dao.milliSecToTimeConversion(inGrpMillisec);
-
-				x.setClockIn(inGrpFormattedTime);				
-				
-				if(x.getClockOut() != null)
-				{
-					long outGrpMillisec = Long.parseLong(x.getClockOut());
-					String outGrpFormattedTime = dao.milliSecToTimeConversion(outGrpMillisec);
-					x.setClockOut(outGrpFormattedTime);
-				}
-				else
-				{
-					x.setClockOut("ongoing");
-				}
-				
-			}
-			map.put("userList", userList);
-			
-			String object = new ObjectMapper().writeValueAsString(map);
-
-//			if(result == true)
-//			{
-//				UserAccountDetail userAcc = dao.getAccountDetailByMail(email);
-//				
-//				long millisec = Long.parseLong(userAcc.getClockIn());
-//
-//				
-//				String formattedTime = dao.milliSecToTimeConversion(millisec);
-//
-//				userAcc.setClockIn(formattedTime);
-//				userAcc.setClockOut("ongoing");
-//				
-//				String json = new Gson().toJson(userAcc);
-//				
-//				return json;
-//			}
+//			List<UserAccountDetail>userList = dao.getAccountListByMail(email);
 //			
-//			map.put("value","false");
+//			for(UserAccountDetail x : userList)
+//			{
+//			
+//				long inGrpMillisec = Long.parseLong(x.getClockIn());
+//
+//				
+//				String inGrpFormattedTime = dao.milliSecToTimeConversion(inGrpMillisec);
+//
+//				x.setClockIn(inGrpFormattedTime);				
+//				
+//				if(x.getClockOut() != null)
+//				{
+//					long outGrpMillisec = Long.parseLong(x.getClockOut());
+//					String outGrpFormattedTime = dao.milliSecToTimeConversion(outGrpMillisec);
+//					x.setClockOut(outGrpFormattedTime);
+//				}
+//				else
+//				{
+//					x.setClockOut("ongoing");
+//				}
+//				
+//			}
+//			map.put("userList", userList);
+//			
+//			String object = new ObjectMapper().writeValueAsString(map);
+
+			if(result == true)
+			{
+				UserAccountDetail userList = dao.getAccountDetailByMail(email);
 				
-//			String obj = new ObjectMapper().writeValueAsString(map);
+				long millisec = Long.parseLong(userList.getClockIn());
+
+				
+				String formattedTime = dao.milliSecToTimeConversion(millisec);
+
+				userList.setClockIn(formattedTime);
+				userList.setClockOut("ongoing");
+				
+				map.put("userList",userList);
+//				String json = new Gson().toJson(userAcc);
+				String json = new ObjectMapper().writeValueAsString(map);
+				
+				return json;
+			}
 			
-			return object;
+			//map.put("value","false");
+				
+			String obj = new ObjectMapper().writeValueAsString(map);
+			
+			return obj;
 	
 }
 
@@ -210,70 +220,74 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 		result = dao.createUserAccDetails(existingUser);
 		
 		
-		List<UserAccountDetail>userList = dao.getAccountListByMail(email);
-		
-		for(UserAccountDetail x : userList)
-		{
-//			System.out.println(x.getEmail());
-//			System.out.println(x.getProject());
-//			System.out.println(x.getTaskDescription());
-//			
-			long inGrpMillisec = Long.parseLong(x.getClockIn());
-
-			
-			String inGrpFormattedTime = dao.milliSecToTimeConversion(inGrpMillisec);
-
-			x.setClockIn(inGrpFormattedTime);
-
-			
-//			System.out.println(x.getClockIn());
-			
-			long outGrpMillisec = Long.parseLong(x.getClockOut());
-
-			
-			String outGrpFormattedTime = dao.milliSecToTimeConversion(outGrpMillisec);
-
-			x.setClockOut(outGrpFormattedTime);
-			
-//			System.out.println(x.getClockOut());
-//			System.out.println();
-			
-			
-		}
-		map.put("userList", userList);
-		
-		String object = new ObjectMapper().writeValueAsString(map);
-		
-//		if(result == true)
+//		List<UserAccountDetail>userList = dao.getAccountListByMail(email);
+//		
+//		for(UserAccountDetail x : userList)
 //		{
-//			UserAccountDetail userAcc = dao.getAccountDetailByMail(email);
-//			
-//			long inMillisec = Long.parseLong(userAcc.getClockIn());
+////			System.out.println(x.getEmail());
+////			System.out.println(x.getProject());
+////			System.out.println(x.getTaskDescription());
+////			
+//			long inGrpMillisec = Long.parseLong(x.getClockIn());
 //
 //			
-//			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
+//			String inGrpFormattedTime = dao.milliSecToTimeConversion(inGrpMillisec);
 //
-//			userAcc.setClockIn(inFormattedTime);
-//			
-//			long outMillisec = Long.parseLong(userAcc.getClockOut());
+//			x.setClockIn(inGrpFormattedTime);
 //
 //			
-//			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+////			System.out.println(x.getClockIn());
+//			
+//			long outGrpMillisec = Long.parseLong(x.getClockOut());
 //
-//			userAcc.setClockOut(outFormattedTime);
 //			
-//			String json = new Gson().toJson(userAcc);
+//			String outGrpFormattedTime = dao.milliSecToTimeConversion(outGrpMillisec);
+//
+//			x.setClockOut(outGrpFormattedTime);
 //			
-//			return json;
+////			System.out.println(x.getClockOut());
+////			System.out.println();
+//			
+//			
 //		}
+//		map.put("userList", userList);
+//		
+//		String object = new ObjectMapper().writeValueAsString(map);
 		
-		//map.put("value","false");
+		if(result == true)
+		{
+//			UserAccountDetail userList = dao.getAccountDetailByMail(email);
+			
+			long inMillisec = Long.parseLong(existingUser.getClockIn());
+
+			
+			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
+
+			existingUser.setClockIn(inFormattedTime);
+			
+			long outMillisec = Long.parseLong(existingUser.getClockOut());
+
+			
+			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+
+			existingUser.setClockOut(outFormattedTime);
+			
+			map.put("userList",existingUser);
 		
-//		String obj = new ObjectMapper().writeValueAsString(map);
+			String json = new ObjectMapper().writeValueAsString(map);
+			
+//			String json = new Gson().toJson(userList);
+			
+			return json;
+		}
+		
+		map.put("value","false");
+		
+		String obj = new ObjectMapper().writeValueAsString(map);
 		
 		//System.out.println(object);
 		
-		return object;
+		return obj;
 	}
 	catch (Exception e) {
 		// TODO: handle exception

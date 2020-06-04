@@ -68,27 +68,48 @@ $.ajax({
 //        $('p').append('status: ' + status + ', data: ' + data);
     	
 			//$('#name').html(data.value);
-    	if(data.user == null)
+    	
+    	let x = true;
+    	
+    	for(let i = 0; i <data.user.length;i++)
     		{
-    		$("#clockOutInput").hide();
+	    		if(data.user == null)
+	    		{
+	    			$("#clockOutInput").hide();
+	    		}
+	    	else if(data.user[i].clockOut == "ongoing")
+	    		{
+	    			x = false;
+//	    			$('#one').html(data.user.project);
+//	    			$('#two').html(data.user.taskDescription);
+//	    			$('#three').html(data.user.clockIn);
+//	    			$('#four').html(data.user.clockOut);
+	    			
+	    			$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td></tr>');
+	    			
+	//    			$('#rows').append('<tr><td></td></tr>')
+	    		}
+	    	else
+	    		{
+//		    		$("#clockOutInput").hide();
+//					$('#one').html(data.user.project);
+//					$('#two').html(data.user.taskDescription);
+//					$('#three').html(data.user.clockIn);
+//					$('#four').html(data.user.clockOut);
+		    		$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td></tr>');
+	    		}
     		}
-    	else if(data.user.clockOut == "ongoing")
+    	
+    	
+    	if(x == false)
     		{
+    		console.log(x);
     			$("#clockInInput").hide();
-    			$('#one').html(data.user.project);
-    			$('#two').html(data.user.taskDescription);
-    			$('#three').html(data.user.clockIn);
-    			$('#four').html(data.user.clockOut);
-    			
-//    			$('#rows').append('<tr><td></td></tr>')
     		}
     	else
-    		{
-    		$("#clockOutInput").hide();
-			$('#one').html(data.user.project);
-			$('#two').html(data.user.taskDescription);
-			$('#three').html(data.user.clockIn);
-			$('#four').html(data.user.clockOut);
+    		{	
+    		console.log(x);
+    			$("#clockOutInput").hide();
     		}
 			
     },
@@ -117,11 +138,11 @@ $('#clockInInput').click(function(){
 //				$('#three').html(data.clockIn);
 //				$('#four').html(data.clockOut);
 			
-			for(let i = 0;i < data.userList.length;i++)
-			{
-				$('#rows').after('<tr><td>'+data.userList[i].project+'</td><td>'+data.userList[i].taskDescription+'</td><td>'+data.userList[i].clockIn+'</td><td>'+data.userList[i].clockOut+'</td></tr>');
+//			for(let i = 0;i < data.userList.length;i++)
+//			{
+				$('.tabcont').append('<tr><td>'+data.userList.project+'</td><td>'+data.userList.taskDescription+'</td><td>'+data.userList.clockIn+'</td><td class = "clockout">'+data.userList.clockOut+'</td></tr>');
 //				$('<tr><td>'+data.userList[i].project+'</td><td>'+data.userList[i].taskDescription+'</td><td>'+data.userList[i].clockIn+'</td><td>'+data.userList[i].clockOut+'</td></tr>').insertAfter($(this).closest('tr'));
-			}
+//			}
 			}
 		
 	},'json');
@@ -157,14 +178,21 @@ $(function () {
 //    				$('#three').html(data.clockIn);
 //    				$('#four').html(data.clockOut);
     			
-    				for(let i = 0;i < data.userList.length;i++)
-    				{
+//    				for(let i = 0;i < data.userList.length;i++)
+//    				{
+    				//console.log("test1"+data.userList[0].clockOut);
 //    					$('#rows').after().remove();
-    					$('#rows').after('<tr><td>'+data.userList[i].project+'</td><td>'+data.userList[i].taskDescription+'</td><td>'+data.userList[i].clockIn+'</td><td>'+data.userList[i].clockOut+'</td></tr>');
+//    					$('td:last-child').remove();
+//    					$('#rows').after('<tr><td>'+data.userList[0].project+'</td><td>'+data.userList[0].taskDescription+'</td><td>'+data.userList[0].clockIn+'</td><td>'+data.userList[0].clockOut+'</td></tr>');
+    			
+//    					if($('#clockout').text() == "ongoing")
+//    						{
+    						$('.clockout').last().text(data.userList.clockOut);
+//    						}
+    					
 //    					$('<tr><td>'+data.userList[i].project+'</td><td>'+data.userList[i].taskDescription+'</td><td>'+data.userList[i].clockIn+'</td><td>'+data.userList[i].clockOut+'</td></tr>').insertAfter($(this).closest('tr'));
-    				}
+//    				}
     			}
-            	
             	
             },
             dataType : 'json'
