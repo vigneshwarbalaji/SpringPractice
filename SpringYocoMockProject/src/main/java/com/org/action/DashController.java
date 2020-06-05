@@ -1,5 +1,8 @@
 package com.org.action;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+
+
 import java.io.IOException;
 
 import java.io.PrintWriter;
@@ -11,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +45,7 @@ import com.org.model.UserAccountDetail;
 import com.org.model.UserAccounts;
 
 
+
 /**
  * Servlet implementation class DashController
  */
@@ -61,9 +67,28 @@ public class DashController{
 		
 		List<UserAccountDetail>existingUser = dao.getAccountListByMail(email);
 		
-		
 		HashMap<String,Object>map = new HashMap<String, Object>();
 		
+		
+		Collections.sort(existingUser);
+		
+//        for (int i = 1; i < existingUser.size(); ++i) { 
+//            long key = Long.parseLong(existingUser.get(i).getClockIn()); 
+//            int j = i - 1; 
+//  
+//            /* Move elements of arr[0..i-1], that are 
+//               greater than key, to one position ahead 
+//               of their current position */
+//            while (j >= 0 && Long.parseLong(existingUser.get(j).getClockIn()) > key) { 
+//                //arr[j + 1] = arr[j]; 
+//            	System.out.println("neutral");
+//            	existingUser.add((j + 1), existingUser.get(j));
+//                j = j - 1; 
+//            } 
+//            //arr[j + 1] = key;
+//            //existingUser.get(i).getClockIn().toString();
+//            existingUser.add((j + 1),existingUser.get(i));
+//        } 
 		
 		for(UserAccountDetail userList: existingUser)
 		{
@@ -301,148 +326,28 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 	
 
 }
-}
 
-	/*
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession(true);
-		String email = session.getAttribute("email").toString();
-		boolean result = false;
-		
-		UserService dao = (UserService) this.getServletContext().getAttribute("dao");
-		
-		//UserAccountDetail updated = new UserAccountDetail();
-		
-		UserAccountDetail updated = dao.getAccountDetailByMail(email);
-		
-		if(updated.getClockIn() != null && updated.getClockOut() == null)
-		{
-			//String milliSecondsClockIn = updated.getClockIn();
-			String milliSecondsClockOut = String.valueOf(System.currentTimeMillis());
-			
-			updated.setClockOut(milliSecondsClockOut);
-			
-			result = dao.createUserAccDetails(updated);
-			
-			if(result == true)
-			{
-				long milliClockIn = Long.parseLong(updated.getClockIn());
-				long milliClockOut = Long.parseLong(updated.getClockOut());
-			    String formattedTimeIn = dao.milliSecToTimeConversion(milliClockIn);
-			    String formattedTimeOut = dao.milliSecToTimeConversion(milliClockOut);
-				updated.setClockIn(formattedTimeIn);
-				updated.setClockOut(formattedTimeOut);
-				
-			    String json = new Gson().toJson(updated);
-			    		    
-			    System.out.println(json);
-			    response.setContentType("application/json");
-				response.getWriter().print(json);
-			}
-		}
-		else
-		{
-			response.getWriter().print("false");
-		}
-		
-	}
 
+
+
+//LogOut logic
+
+/*
+@RequestMapping(value = "/logOut",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+public @ResponseBody String logOut(HttpServletRequest request,HttpServletResponse response) throws IOException
+{
+	HttpSession session = request.getSession(false);
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession(true);
-		String name = session.getAttribute("name").toString();
-		String email = session.getAttribute("email").toString();
-		
-//		System.out.println(name);
-//		System.out.println(email);
-//		
-//		System.out.println(request.getParameter("action"));
-//		System.out.println(request.getParameter("pro"));
-//		System.out.println(request.getParameter("descr"));
-		
-		String project = request.getParameter("pro");
-		String description = request.getParameter("descr");
-		
-		UserService dao = (UserService) this.getServletContext().getAttribute("dao");
-
-		
-		
-		UserAccountDetail accDet = new UserAccountDetail();
-		boolean result = false;
-		
-		UserAccountDetail existingUser = dao.getAccountDetailByMail(email);
-//		if(project != null|| description != null)
-//		{
-//		if(existingUser.getClockIn().isEmpty() ||existingUser == null)
-//		{
-			
-		
-			accDet.setId(null);
-			accDet.setEmail(email);
-			accDet.setProject(project);
-			accDet.setTaskDescription(description);
-			//Instant now = Instant.now();
-			//System.out.println(now.getEpochSecond());
-			//long seconds = now.getEpochSecond();
-			String milliSeconds = String.valueOf(System.currentTimeMillis());
-			
-			accDet.setClockIn(milliSeconds);
-			
-			//UserService dao = (UserService) this.getServletContext().getAttribute("dao");
-			
-
-			
-			result = dao.createUserAccDetails(accDet);
-
-			
-			
-//			List<UserAccountDetail> userAcc = dao.getAccountDetailList(email);
-			
-//			Type listType = new TypeToken<List<UserAccountDetail>>() {}.getType();
-
-			
-//			for (UserAccountDetail list : userAcc) {
-				
-//				long millisec = Long.parseLong(list.getClockIn());
-//				long millisecOut = Long.parseLong(list.getClockOut());
-//			    //String formattedTime = date.format(formatter);
-//				
-//				String formattedTime = dao.milliSecToTimeConversion(millisec);
-//				String formattedTimeOut = dao.milliSecToTimeConversion(millisecOut);
-//				list.setClockIn(formattedTime);
-//				list.setClockIn(formattedTimeOut);
-				
-
-
-//			}
-			
-			UserAccountDetail userAcc = dao.getAccountDetailByMail(email);
-			
-			long millisec = Long.parseLong(userAcc.getClockIn());
-//			long millisecOut = Long.parseLong(list.getClockOut());
-//		    //String formattedTime = date.format(formatter);
-//			
-			String formattedTime = dao.milliSecToTimeConversion(millisec);
-//			String formattedTimeOut = dao.milliSecToTimeConversion(millisecOut);
-			userAcc.setClockIn(formattedTime);
-			
-//			String json = new Gson().toJson(userAcc,listType);
-			String json = new Gson().toJson(userAcc);
-		    System.out.println(json);
-		    response.setContentType("application/json");
-			response.getWriter().print(json);
-			
-			
-			//Type listType = new TypeToken<List<String>>() {}.getType();
-
-
-		
-		
-		
-		
-	}
-
+	session.invalidate();
+	
+	return "redirect:/index";
 }
 */
+
+
+
+
+
+
+
+}

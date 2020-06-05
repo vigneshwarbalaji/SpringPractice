@@ -1,11 +1,14 @@
 package com.org.model;
 
 import com.googlecode.objectify.annotation.Entity;
+
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
+
 @Entity
-public class UserAccountDetail {
+public class UserAccountDetail implements Comparable<UserAccountDetail>
+{
 	
 	@Id
 	Long id;
@@ -14,6 +17,7 @@ public class UserAccountDetail {
 	
 	String project;
 	String taskDescription;
+	@Index
 	String clockIn;
 	@Index
 	String clockOut;
@@ -57,5 +61,10 @@ public class UserAccountDetail {
 	}
 	
 	
+public int compareTo(UserAccountDetail user) {
+		
+		return Long.compare(Long.parseLong(this.clockIn), Long.parseLong(user.clockIn));
+	}
+
 
 }

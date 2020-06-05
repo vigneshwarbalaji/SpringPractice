@@ -100,7 +100,9 @@
     
 
     <div class="bluey" class="Logout" align="center">
-        <input type="button" name="" value="Logout">
+    <form action="/logOut" method="get">
+    	<input type="submit" name="" value="Logout">
+    </form>
     </div>
 </body>
 
