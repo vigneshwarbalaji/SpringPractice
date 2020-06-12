@@ -80,7 +80,7 @@
 
 $('#signSub').click(function(){
 	
-	$.post('http://localhost:8080/ControllerServlet', {name: $('#signName').val(),email: $('#signMail').val(),pass: $('#signPass').val(),rePass:$('#signRePass').val()}, 
+	$.post('/ControllerServlet', {name: $('#signName').val(),email: $('#signMail').val(),pass: $('#signPass').val(),rePass:$('#signRePass').val()}, 
 			function (data, textStatus, jqXHR) {
 		
 		if(data.value == 'true')
@@ -99,7 +99,7 @@ $('#signSub').click(function(){
 
 $('#logSub').click(function(){
 	
-	$.get('http://localhost:8080/ControllerServlet', {email: $('#logEmail').val(),pass: $('#logPass').val()}, 
+	$.get('/ControllerServlet', {email: $('#logEmail').val(),pass: $('#logPass').val()}, 
 			function (data, textStatus, jqXHR) {
 		
 		if(data.value == 'true')

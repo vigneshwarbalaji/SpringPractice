@@ -57,25 +57,32 @@
     <!-- <div class="heading1">
         <strong>Entries</strong>
     </div>-->
-
+  
     <span class="material-icons" id="i0">
         add_circle_outline
     </span>
+    
     
     <br><br>
     
 	<!--<input type = "button" id ="new" name="projectbutton" onclick="clockInFunc()" value = "submit"><br><br>
 	-->
 <script src="js/ClockResponse.js"></script>
+
+
+
+
     <Table class="tabcont">
-        <tr id = "rows">
+    <thead>
+     	<tr id = "rows">
             <th id="th1">Add Task Description</th>
             <th id="th2">Project</th>
             <th id="th3">clock-In</th>
             <th id="th4">clock-out</th>
             <th id="th5">Total Hours</th>
         </tr>
-        <!-- <tr id = "rows">
+     </thead>
+        <!--  <tr id = "rows">
            <td id = "one"></td>
             <td id = two></td>
             <td id = three></td>

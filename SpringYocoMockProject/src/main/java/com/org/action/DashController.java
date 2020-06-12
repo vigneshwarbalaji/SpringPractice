@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,6 +59,8 @@ public class DashController{
 	
 	UserService dao = new UserServiceImpl();
 	
+	long lastInTime = 0;
+	
 	@RequestMapping(value = "/GetEntry",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String GetEntry(HttpServletRequest request,HttpServletResponse response) throws IOException
 	{
@@ -67,28 +70,15 @@ public class DashController{
 		
 		List<UserAccountDetail>existingUser = dao.getAccountListByMail(email);
 		
+		List<String>hours = new ArrayList<String>();
+		List<String>mins = new ArrayList<String>();
+		List<String>secs = new ArrayList<String>();
+		List<String>date = new ArrayList<String>();
+		
 		HashMap<String,Object>map = new HashMap<String, Object>();
 		
-		
+		int index = 0;
 		Collections.sort(existingUser);
-		
-//        for (int i = 1; i < existingUser.size(); ++i) { 
-//            long key = Long.parseLong(existingUser.get(i).getClockIn()); 
-//            int j = i - 1; 
-//  
-//            /* Move elements of arr[0..i-1], that are 
-//               greater than key, to one position ahead 
-//               of their current position */
-//            while (j >= 0 && Long.parseLong(existingUser.get(j).getClockIn()) > key) { 
-//                //arr[j + 1] = arr[j]; 
-//            	System.out.println("neutral");
-//            	existingUser.add((j + 1), existingUser.get(j));
-//                j = j - 1; 
-//            } 
-//            //arr[j + 1] = key;
-//            //existingUser.get(i).getClockIn().toString();
-//            existingUser.add((j + 1),existingUser.get(i));
-//        } 
 		
 		for(UserAccountDetail userList: existingUser)
 		{
@@ -100,11 +90,24 @@ public class DashController{
 
 				userList.setClockIn(inFormattedTime);
 				
+				lastInTime = inMillisec;
+				
 				if(userList.getClockOut() != null)
 				{
 					long outMillisec = Long.parseLong(userList.getClockOut());
-
+					
+					String diffInHours = String.valueOf((outMillisec - inMillisec)/(60 * 60 * 1000));
+					hours.add(index, diffInHours);
+					
+					String diffInMins = String.valueOf((outMillisec - inMillisec)/(60 * 1000) % 60);
+					mins.add(index, diffInMins);
+					
+					String diffInSecs = String.valueOf((outMillisec - inMillisec)/1000 % 60);
+					secs.add(index, diffInSecs);
+					
 					String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+					
+					date.add(index, dao.milliSecToDateConversion(inMillisec));
 
 					userList.setClockOut(outFormattedTime);
 				}
@@ -116,8 +119,14 @@ public class DashController{
 				}
 
 			}
-
+			
+			++index;
 		}
+		
+		map.put("diffInHours", hours);
+		map.put("diffInMins", mins);
+		map.put("diffInSecs", secs);
+		map.put("date", date);
 				
 		map.put("user", existingUser);
 		
@@ -157,42 +166,21 @@ public class DashController{
 
 			
 			result = dao.createUserAccDetails(accDet);
-			
-			//System.out.println("result"+result);
-//			List<UserAccountDetail>userList = dao.getAccountListByMail(email);
-//			
-//			for(UserAccountDetail x : userList)
-//			{
-//			
-//				long inGrpMillisec = Long.parseLong(x.getClockIn());
-//
-//				
-//				String inGrpFormattedTime = dao.milliSecToTimeConversion(inGrpMillisec);
-//
-//				x.setClockIn(inGrpFormattedTime);				
-//				
-//				if(x.getClockOut() != null)
-//				{
-//					long outGrpMillisec = Long.parseLong(x.getClockOut());
-//					String outGrpFormattedTime = dao.milliSecToTimeConversion(outGrpMillisec);
-//					x.setClockOut(outGrpFormattedTime);
-//				}
-//				else
-//				{
-//					x.setClockOut("ongoing");
-//				}
-//				
-//			}
-//			map.put("userList", userList);
-//			
-//			String object = new ObjectMapper().writeValueAsString(map);
 
 			if(result == true)
 			{
 				UserAccountDetail userList = dao.getAccountDetailByMail(email);
 				
 				long millisec = Long.parseLong(userList.getClockIn());
-
+				
+//				long dateDifference = ((millisec - lastInTime) / (24 * 60 * 60 * 1000));
+//				
+//				if(dateDifference >= 1)
+//				{
+//					String date = dao.milliSecToDateConversion(millisec);
+//					
+//					map.put("date", date);
+//				}
 				
 				String formattedTime = dao.milliSecToTimeConversion(millisec);
 
@@ -228,6 +216,10 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 	String name = session.getAttribute("name").toString();
 	String email = session.getAttribute("email").toString();
 	
+	long hours = 0;
+	long mins = 0;
+	long secs = 0;
+	
 	//boolean checkIfUserClockedIn = true;
 	//UserAccountDetail accDet = new UserAccountDetail();
 	
@@ -243,41 +235,6 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 		existingUser.setClockOut(milliSeconds);
 		
 		result = dao.createUserAccDetails(existingUser);
-		
-		
-//		List<UserAccountDetail>userList = dao.getAccountListByMail(email);
-//		
-//		for(UserAccountDetail x : userList)
-//		{
-////			System.out.println(x.getEmail());
-////			System.out.println(x.getProject());
-////			System.out.println(x.getTaskDescription());
-////			
-//			long inGrpMillisec = Long.parseLong(x.getClockIn());
-//
-//			
-//			String inGrpFormattedTime = dao.milliSecToTimeConversion(inGrpMillisec);
-//
-//			x.setClockIn(inGrpFormattedTime);
-//
-//			
-////			System.out.println(x.getClockIn());
-//			
-//			long outGrpMillisec = Long.parseLong(x.getClockOut());
-//
-//			
-//			String outGrpFormattedTime = dao.milliSecToTimeConversion(outGrpMillisec);
-//
-//			x.setClockOut(outGrpFormattedTime);
-//			
-////			System.out.println(x.getClockOut());
-////			System.out.println();
-//			
-//			
-//		}
-//		map.put("userList", userList);
-//		
-//		String object = new ObjectMapper().writeValueAsString(map);
 		
 		if(result == true)
 		{
@@ -296,6 +253,14 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
 
 			existingUser.setClockOut(outFormattedTime);
+			
+			hours = (outMillisec - inMillisec)/(60 * 60 * 1000);
+			mins  = (outMillisec - inMillisec)/(60 * 1000) % 60;
+			secs = (outMillisec - inMillisec)/1000 % 60;
+			
+			map.put("hours", hours);
+			map.put("mins", mins);
+			map.put("secs", secs);
 			
 			map.put("userList",existingUser);
 		
@@ -331,18 +296,18 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 
 
 //LogOut logic
+//@ResponseBody
 
-/*
-@RequestMapping(value = "/logOut",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-public @ResponseBody String logOut(HttpServletRequest request,HttpServletResponse response) throws IOException
+@RequestMapping(value = "/logOut",method = RequestMethod.GET)
+public String logOut(HttpServletRequest request,HttpServletResponse response) throws IOException
 {
-	HttpSession session = request.getSession(false);
+	HttpSession session = request.getSession();
 	
 	session.invalidate();
 	
-	return "redirect:/index";
+	return "redirect:/";
 }
-*/
+
 
 
 

@@ -91,6 +91,16 @@ public class UserServiceImpl implements UserService
 	    return formattedTime;
 	}
 	
+	public String milliSecToDateConversion(long millisec)
+	{
+		LocalDateTime date =
+	    	    LocalDateTime.ofInstant(Instant.ofEpochMilli(millisec), ZoneId.systemDefault());
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
+	    String formattedDate = date.format(formatter);
+	    
+	    return formattedDate;
+	}
+	
 	/*public List<UserAccountDetail> getAccountDetailList(String email)
 	{
 		List<UserAccountDetail> existingUser=ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email",email).list();

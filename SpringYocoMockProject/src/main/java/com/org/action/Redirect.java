@@ -9,7 +9,7 @@ public class Redirect
 	@RequestMapping("/SignUp")  
     public String signupRedirect()  
     {  
-        return "SignUp";  
+        return "Signup";  
     }
 	
 	@RequestMapping("/Dashboard")  
