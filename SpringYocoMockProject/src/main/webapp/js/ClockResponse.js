@@ -118,3 +118,22 @@ $(function () {
     });
 });
 
+
+
+
+$(function () {
+    $('#burst').on('click', function () {
+
+    	//var Status = $(this).val();
+        $.ajax({
+        	type: 'GET',
+            url: '/task',
+            success: function (data, status, xhr) {
+    				$('#warn').html('<h6>Infected</h6>');
+            	
+            },
+            dataType : 'json'
+        });
+    });
+});
+

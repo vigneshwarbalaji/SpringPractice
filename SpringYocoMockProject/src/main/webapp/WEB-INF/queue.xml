@@ -1,0 +1,6 @@
+<queue-entries>
+  <queue>
+    <name>test-queue</name>
+    <rate>5/m</rate>
+  </queue>
+</queue-entries>

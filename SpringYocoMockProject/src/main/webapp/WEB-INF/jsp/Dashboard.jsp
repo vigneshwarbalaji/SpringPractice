@@ -111,6 +111,10 @@
     	<input type="submit" name="" value="Logout">
     </form>
     </div>
+    
+    <div class="bluey" id="task" align="center">
+        <input type="button" id="burst" name="" value="burst">
+    </div>
 </body>
 
 </html>
