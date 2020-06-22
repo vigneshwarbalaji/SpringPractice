@@ -189,9 +189,12 @@ public class DashController{
 //				}
 				
 				String formattedTime = dao.milliSecToTimeConversion(millisec,zones);
+//				String formattedDate = dao.milliSecToDateConversion(millisec,zones);
 
 				userList.setClockIn(formattedTime);
 				userList.setClockOut("ongoing");
+				
+				map.put("date","Current Entries");
 				
 				map.put("userList",userList);
 //				String json = new Gson().toJson(userAcc);
@@ -258,6 +261,7 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 
 			
 			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec,zones);
+//			String outFormattedDate = dao.milliSecToDateConversion(outMillisec,zones);
 
 			existingUser.setClockOut(outFormattedTime);
 			
@@ -268,6 +272,8 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 			map.put("hours", hours);
 			map.put("mins", mins);
 			map.put("secs", secs);
+			
+			map.put("date","Current Entries");
 			
 			map.put("userList",existingUser);
 		

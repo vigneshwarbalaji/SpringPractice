@@ -57,13 +57,27 @@ body {
     transition: .5s;
 }
 
+
+
+
 .box .inputBox input:focus~label,
-.box .inputBox input:valid~label {
+.box .inputBox input:valid~label
+{
     top: -18px;
     /*left: 0;*/
     color: #03a9f4;
     font-size: 12px;
 }
+
+
+/*
+.box .inputBox input[type="email"]:~label,
+.box .inputBox input[type="email"]:invalid~label
+{
+	color: red;
+	border-bottom: red;
+}
+*/
 
 .box input[type="submit"] {
     background: transparent;

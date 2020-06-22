@@ -12,7 +12,7 @@
         <h2>Login</h2>
         <!-- <form> -->
             <div class="inputBox">
-                <input type="text" id="logEmail" name="email" required="">
+                <input type="email" id="logEmail" name="email" required="">
                 <label>Email</label>
             </div>
 

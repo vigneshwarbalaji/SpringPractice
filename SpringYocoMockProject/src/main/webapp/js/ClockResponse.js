@@ -1,4 +1,8 @@
 
+var date = "Current Entries";
+var check = false;
+
+
 $.ajax({
 	type: 'get',
     url: '/GetEntry',
@@ -33,7 +37,20 @@ $.ajax({
 	    		//.tabcont
 	    			if(data.date[j - 1] != data.date[j] && j < data.user.length)
 	    			{
-	    				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
+	    				
+	    				if(data.date[j] == undefined)
+	    					{
+	    					
+//	    					check = true;
+	    					$('.tabcont').prepend('<tbody><tr id = "current"><th colspan="5">'+date+'</th><tr></tbody>')
+	    					}
+	    				else
+	    					{
+	    					$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
+	    					}
+//	    				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
+	    				
+//	    				date = data.date[j]
 	    			}
 	    		}
 	    		
@@ -63,6 +80,7 @@ $('#clockInInput').click(function(){
 	$("#clockOutInput").show();
 	
 	$.post('/clockIn', {project: $('#project').val(),descript: $('#descript').val()}, 
+			
 			function (data, textStatus, jqXHR) {
 		
 		$('#project').val('');
@@ -74,12 +92,23 @@ $('#clockInInput').click(function(){
 			}
 		else
 			{
+//			if(date != data.date)
+//			{
+//			if(check == false)
+//				{
+//				check = true;
+				
+//				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+date+'</th><tr></tbody>')
+//				}
+//				date = data.date;
+				
+//			}
+//				$('.tabcont').prepend('<tr><td>'+data.userList.project+'</td><td>'+data.userList.taskDescription+'</td><td>'+data.userList.clockIn+'</td><td class = "clockout">'+data.userList.clockOut+'</td><td class = "totalHours"></td></tr>');
 			
-			if(data.date != null)
-			{
-				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date+'</th><tr></tbody>')
-			}
-				$('.tabcont').prepend('<tr><td>'+data.userList.project+'</td><td>'+data.userList.taskDescription+'</td><td>'+data.userList.clockIn+'</td><td class = "clockout">'+data.userList.clockOut+'</td><td class = "totalHours"></td></tr>');
+			$('.tabcont').prepend('<tr><td>'+data.userList.project+'</td><td>'+data.userList.taskDescription+'</td><td>'+data.userList.clockIn+'</td><td class = "clockout">'+data.userList.clockOut+'</td><td class = "totalHours"></td></tr>');
+			
+			$('#current').remove();
+			$('.tabcont').prepend('<tbody><tr id = "current"><th colspan="5">'+date+'</th><tr></tbody>')
 			}
 		
 	},'json');

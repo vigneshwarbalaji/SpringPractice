@@ -89,6 +89,7 @@
             <th id="th4">clock-out</th>
             <th id="th5">Total Hours</th>
         </tr>
+        
      </thead>
         <!--  <tr id = "rows">
            <td id = "one"></td>

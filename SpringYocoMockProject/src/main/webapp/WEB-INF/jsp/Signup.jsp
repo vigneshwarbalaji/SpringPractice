@@ -21,7 +21,7 @@
             </div>
             
             <div class="inputBox">
-                <input type="text" name="email" id="signMail" required="" oninvalid="Email required">
+                <input type="email" name="email" id="signMail" required="" oninvalid="Email required">
                 <label>Email</label>
             </div>
 
