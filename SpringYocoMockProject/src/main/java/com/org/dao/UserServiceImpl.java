@@ -81,20 +81,41 @@ public class UserServiceImpl implements UserService
 	     
 	}
 	
-	public String milliSecToTimeConversion(long millisec)
+	public String milliSecToTimeConversion(long millisec,String zones)
 	{
-		LocalDateTime date =
-	    	    LocalDateTime.ofInstant(Instant.ofEpochMilli(millisec), ZoneId.systemDefault());
+		LocalDateTime date;
+		if(zones == null)
+		{
+			date =
+		    	    LocalDateTime.ofInstant(Instant.ofEpochMilli(millisec), ZoneId.systemDefault());
+		}
+		else
+		{
+			date =
+		    	    LocalDateTime.ofInstant(Instant.ofEpochMilli(millisec), ZoneId.of(zones));
+		}
+		
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH);
 	    String formattedTime = date.format(formatter);
 	    
 	    return formattedTime;
 	}
 	
-	public String milliSecToDateConversion(long millisec)
+	public String milliSecToDateConversion(long millisec,String zones)
 	{
-		LocalDateTime date =
-	    	    LocalDateTime.ofInstant(Instant.ofEpochMilli(millisec), ZoneId.systemDefault());
+		LocalDateTime date;
+		
+		if(zones == null)
+		{
+			date =
+		    	    LocalDateTime.ofInstant(Instant.ofEpochMilli(millisec), ZoneId.systemDefault());
+		}
+		else
+		{
+			date =
+		    	    LocalDateTime.ofInstant(Instant.ofEpochMilli(millisec), ZoneId.of(zones));
+		}
+		
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
 	    String formattedDate = date.format(formatter);
 	    

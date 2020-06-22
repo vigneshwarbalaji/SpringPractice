@@ -120,6 +120,76 @@ $(function () {
 
 
 
+$(function () {
+    $('#confirm').on('click',function () {
+
+    	
+    	var zone = $('#zone').val();
+    	console.log(zone);
+        $.ajax({
+        	type: 'GET',
+            url: '/GetEntry',
+            data :{ zone : $('#zone').val()},
+            success: function (data, status, xhr) {
+            	
+            	let x = true;
+            	let j = 1;
+            	$('.tabcont tbody').remove();
+            	for(let i = 0; i <data.user.length;i++)
+            		{
+            		if(i == 0)
+            			{
+            			$('.tabcont').append('<tbody><tr><th colspan="5">'+data.date[i]+'</th><tr></tbody>')
+            			}
+            		
+        	    		if(data.user == null)
+        	    		{
+        	    			$("#clockOutInput").hide();
+        	    		}
+        	    	else if(data.user[i].clockOut == "ongoing")
+        	    		{
+        	    			x = false;
+        	    			
+//        	    			var hours = Math.abs(parseInt(data.user[i].clockIn).split(':') - parseInt(data.user[i].clockOut).split(':')); 
+        	    			$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td class = "clockout">'+data.user[i].clockOut+'</td><td class = "totalHours"></td></tr>');
+        	    			
+        	    		}
+        	    	else
+        	    		{
+        	    		$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
+        	    		
+        	    		//.tabcont
+        	    			if(data.date[j - 1] != data.date[j] && j < data.user.length)
+        	    			{
+        	    				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
+        	    			}
+        	    		}
+        	    		
+        	    		++j;
+            		}
+            	
+            	
+            	if(x == false)
+            		{
+            		console.log(x);
+            			$("#clockInInput").hide();
+            		}
+            	else
+            		{	
+            		console.log(x);
+            			$("#clockOutInput").hide();
+            		}
+            },
+            dataType : 'json'
+        });
+    });
+});
+
+
+
+
+
+
 
 $(function () {
     $('#burst').on('click', function () {
@@ -137,3 +207,46 @@ $(function () {
     });
 });
 
+
+
+
+
+
+$.ajax({
+	type: 'get',
+    url: 'http://api.timezonedb.com/v2.1/list-time-zone?key=J3SYS1NNO9NW&format=json',
+    success: function (data, status, xhr) {
+    	
+    	var sample = data.zones;
+
+        sample.sort(function(a, b) { return a.gmtOffset - b.gmtOffset });
+
+        for (let i = 0; i < sample.length; i++) {
+
+            // let sample = Math.floor(data.zones[0].timestamp - data.zones[0].gmtOffset) / 3600
+
+            let hour = Math.floor((sample[i].gmtOffset) % (3600 * 24) / 3600);
+            var minute = Math.abs(sample[i].gmtOffset % 3600 / 60);
+
+            
+//            console.log(hour + ":" + minute);
+            // Math.floor(d / 3600)
+
+            // $('.tabcont').append('<tr><td>' + data.zones[i].countryCode + '</td><td>' + data.zones[i].countryName + '</td><td>' + data.zones[i].zoneName + '</td><td>' + data.zones[i].gmtOffset + '</td><td>' + data.zones[i].timestamp + '</td></tr>');
+
+            
+            if(Math.sign(hour) == 1)
+            {
+            	$('#zone').append('<option value='+sample[i].zoneName+'> GMT ( +' + hour + ":" + minute + ' ) ' + sample[i].zoneName + '</option><br>');
+            }
+            else
+            {
+            	$('#zone').append('<option value='+sample[i].zoneName+'> GMT ( ' + hour + ":" + minute + ' ) ' + sample[i].zoneName + '</option><br>');
+            }
+            
+        }
+
+			
+    },
+    dataType : 'json'
+});

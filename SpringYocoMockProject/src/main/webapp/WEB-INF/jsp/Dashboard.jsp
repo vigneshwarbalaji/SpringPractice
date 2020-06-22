@@ -11,6 +11,8 @@
         Time Tracker
     </title>
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="css\newstyle.css">
 </head>
@@ -51,7 +53,13 @@
     </div>
 
     <div class="bluey" id="Timezone" align="center">
-        <input type="button" name="" value="timezone">
+        <!-- <input type="button" name="" value="timezone"> -->
+        <select name=timeZone id=zone>
+        
+        <option id="drop" value="zone">Zones</option>
+        </select>
+        
+        <input type="submit" name="" id="confirm">
     </div>
 
     <!-- <div class="heading1">

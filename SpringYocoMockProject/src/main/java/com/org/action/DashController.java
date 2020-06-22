@@ -61,12 +61,17 @@ public class DashController{
 	
 	long lastInTime = 0;
 	
+	String zones = "";
+	
 	@RequestMapping(value = "/GetEntry",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String GetEntry(HttpServletRequest request,HttpServletResponse response) throws IOException
 	{
 		HttpSession session = request.getSession(true);
 		String email = session.getAttribute("email").toString();
 //		UserAccountDetail existingUser = dao.getAccountDetailByMail(email);
+		
+		zones = request.getParameter("zone");
+		
 		
 		List<UserAccountDetail>existingUser = dao.getAccountListByMail(email);
 		
@@ -86,7 +91,7 @@ public class DashController{
 			{
 				long inMillisec = Long.parseLong(userList.getClockIn());
 
-				String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
+				String inFormattedTime = dao.milliSecToTimeConversion(inMillisec,zones);
 
 				userList.setClockIn(inFormattedTime);
 				
@@ -105,9 +110,9 @@ public class DashController{
 					String diffInSecs = String.valueOf((outMillisec - inMillisec)/1000 % 60);
 					secs.add(index, diffInSecs);
 					
-					String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+					String outFormattedTime = dao.milliSecToTimeConversion(outMillisec,zones);
 					
-					date.add(index, dao.milliSecToDateConversion(inMillisec));
+					date.add(index, dao.milliSecToDateConversion(inMillisec,zones));
 
 					userList.setClockOut(outFormattedTime);
 				}
@@ -139,6 +144,7 @@ public class DashController{
 	public @ResponseBody String clockIn(HttpServletRequest request,HttpServletResponse response) throws IOException
 	{
 		
+//		zones = request.getParameter("zone");
 		HashMap<String,Object>map = new HashMap<String, Object>();
 		
 		HttpSession session = request.getSession(true);
@@ -182,7 +188,7 @@ public class DashController{
 //					map.put("date", date);
 //				}
 				
-				String formattedTime = dao.milliSecToTimeConversion(millisec);
+				String formattedTime = dao.milliSecToTimeConversion(millisec,zones);
 
 				userList.setClockIn(formattedTime);
 				userList.setClockOut("ongoing");
@@ -207,6 +213,7 @@ public class DashController{
 @RequestMapping(value = "/clockOut",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
 public @ResponseBody String clockOut(HttpServletRequest request,HttpServletResponse response) throws IOException
 {
+//	zones = request.getParameter("zone");
 	
 	HashMap<String,Object>map = new HashMap<String, Object>();
 	
@@ -243,14 +250,14 @@ public @ResponseBody String clockOut(HttpServletRequest request,HttpServletRespo
 			long inMillisec = Long.parseLong(existingUser.getClockIn());
 
 			
-			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec);
+			String inFormattedTime = dao.milliSecToTimeConversion(inMillisec,zones);
 
 			existingUser.setClockIn(inFormattedTime);
 			
 			long outMillisec = Long.parseLong(existingUser.getClockOut());
 
 			
-			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec);
+			String outFormattedTime = dao.milliSecToTimeConversion(outMillisec,zones);
 
 			existingUser.setClockOut(outFormattedTime);
 			

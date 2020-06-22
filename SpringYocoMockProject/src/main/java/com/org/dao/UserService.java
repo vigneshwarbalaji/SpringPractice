@@ -11,8 +11,8 @@ public interface UserService {
 	UserAccounts getUserByMail(String email);
 	UserAccountDetail getAccountDetailByMail(String email);
 	boolean createUserAccDetails(UserAccountDetail accDetails);
-	String milliSecToTimeConversion(long millisec);
+	String milliSecToTimeConversion(long millisec,String zones);
 	//List<UserAccountDetail> getAccountDetailList(String email);
-	String milliSecToDateConversion(long millisec);
+	String milliSecToDateConversion(long millisec,String zones);
 	public List<UserAccountDetail> getAccountListByMail(String email);
 }
