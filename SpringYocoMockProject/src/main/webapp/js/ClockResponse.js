@@ -1,6 +1,6 @@
 
 var date = "Current Entries";
-var check = false;
+//var check = false;
 
 
 //$.ajax({
@@ -94,10 +94,10 @@ $.ajax({
 //    	for(let i = (data.user.length-1) ; i >= 0  ;i--)
     	for(let i = 0 ; i <  data.user.length;i++)
     		{
-//    		if(i == (data.user.length) - 1)
-//    			{
-//    			$('.tabcont').append('<tbody><tr><th colspan="5">'+data.date[i]+'</th><tr></tbody>')
-//    			}
+    		if(i == 0)
+    			{
+    			$('.tabcont').append('<tbody><tr><th colspan="5"></th><tr></tbody>')
+    			}
     		
 	    		if(data.user == null)
 	    		{
@@ -239,7 +239,7 @@ $(function () {
 
 $(function () {
     $('#confirm').on('click',function () {
-
+    	check = false;
     	
     	var zone = $('#zone').val();
     	console.log(zone);
@@ -254,10 +254,11 @@ $(function () {
             	$('.tabcont tbody').remove();
             	for(let i = 0; i <data.user.length;i++)
             		{
-//            		if(i == 0)
-//            			{
-//            			$('.tabcont').append('<tbody><tr><th colspan="5">'+data.date[i]+'</th><tr></tbody>')
-//            			}
+            		if(i == 0)
+            			{
+            			$('.tabcont').append('<tbody><tr><th colspan="5"></th><tr></tbody>')
+            			}
+            		
             		
         	    		if(data.user == null)
         	    		{
@@ -273,12 +274,19 @@ $(function () {
         	    		}
         	    	else
         	    		{
-        	    		$('.tabcont').prepend('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
+//        	    		if(check == true)
+//        	    		{
+        	    			$('.tabcont').prepend('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
+//        	    		}
+//        	    		$('.tabcont').prepend('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
         	    		
         	    		//.tabcont  < data.user.length
         	    			if(data.date[j - 1] != data.date[j] && j >= 0)
         	    			{
-        	    				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j - 1]+'</th><tr></tbody>')
+//        	    				check = true;
+//        	    				$('.tabcont').prepend('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
+        	    				$('.tabcont').prepend('<tbody><tr id = "current"><th colspan="5">'+data.date[j - 1]+'</th><tr></tbody>')
+        	    				date = data.date[j - 1];
         	    			}
         	    		}
         	    		
