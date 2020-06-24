@@ -99,9 +99,12 @@ public class DashController{
 				
 				if(userList.getClockOut() != null)
 				{
+					System.out.println(index+" ");
+					
 					long outMillisec = Long.parseLong(userList.getClockOut());
 					
 					String diffInHours = String.valueOf((outMillisec - inMillisec)/(60 * 60 * 1000));
+					//System.out.println(outMillisec);
 					hours.add(index, diffInHours);
 					
 					String diffInMins = String.valueOf((outMillisec - inMillisec)/(60 * 1000) % 60);
@@ -115,17 +118,25 @@ public class DashController{
 					date.add(index, dao.milliSecToDateConversion(inMillisec,zones));
 
 					userList.setClockOut(outFormattedTime);
+					
+					
 				}
 				else
 				{
 					userList.setClockOut("ongoing");
-					
-					System.out.println(userList.getClockOut());
+//					System.out.println(userList.getClockOut());
 				}
-
+				
+//				++index;
 			}
 			
-			++index;
+			index++;
+			
+//			if(userList.getClockOut() != null)
+//			{
+//				++index;
+//			}
+			
 		}
 		
 		map.put("diffInHours", hours);
@@ -189,12 +200,12 @@ public class DashController{
 //				}
 				
 				String formattedTime = dao.milliSecToTimeConversion(millisec,zones);
-//				String formattedDate = dao.milliSecToDateConversion(millisec,zones);
+				String formattedDate = dao.milliSecToDateConversion(millisec,zones);
 
 				userList.setClockIn(formattedTime);
 				userList.setClockOut("ongoing");
 				
-				map.put("date","Current Entries");
+				map.put("date",formattedDate);
 				
 				map.put("userList",userList);
 //				String json = new Gson().toJson(userAcc);

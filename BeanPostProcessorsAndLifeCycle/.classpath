@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-aop-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-aspects-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-beans-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-context-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-context-support-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-core-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-expression-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-instrument-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-jcl-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-jdbc-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-jms-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-messaging-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-orm-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-oxm-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-test-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-tx-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-web-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-webflux-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-webmvc-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/SpringQuickAssemble/spring-websocket-5.1.5.RELEASE.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

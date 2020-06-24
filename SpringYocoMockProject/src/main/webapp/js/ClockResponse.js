@@ -3,20 +3,101 @@ var date = "Current Entries";
 var check = false;
 
 
+//$.ajax({
+//	type: 'get',
+//    url: '/GetEntry',
+//    success: function (data, status, xhr) {
+//    	
+//    	let x = true;
+//    	let j = 1;
+//
+////    	let j = (data.user.length) - 1;
+//    	for(let i = 0 ; i < data.user.length ;i++)
+//    		{
+//    		if(i == 0)
+//    			{
+//    			$('.tabcont').append('<tbody><tr><th colspan="5">'+data.date[i]+'</th><tr></tbody>')
+//    			}
+//    		
+//	    		if(data.user == null)
+//	    		{
+//	    			$("#clockOutInput").hide();
+//	    		}
+//	    	else if(data.user[i].clockOut == "ongoing")
+//	    		{
+//	    			x = false;
+//	    			
+////	    			var hours = Math.abs(parseInt(data.user[i].clockIn).split(':') - parseInt(data.user[i].clockOut).split(':')); 
+//	    			$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td class = "clockout">'+data.user[i].clockOut+'</td><td class = "totalHours"></td></tr>');
+//	    			
+//	    		}
+//	    	else
+//	    		{
+//	    		
+//	    		
+//	    		$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
+//	    		
+//	    		//.tabcont
+//	    			if(data.date[j - 1] != data.date[j] && j < data.user.length)
+//	    			{
+//	    				
+//	    				if(data.date[j] == undefined)
+//	    					{
+//	    					
+////	    					check = true;
+////	    					$('.tabcont').prepend('<tbody><tr id = "current"><th colspan="5">'+date+'</th><tr></tbody>')
+//	    					}
+//	    				else
+//	    					{
+////	    					$('#rem').remove()
+//	    					$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
+//	    					}
+////	    				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
+//	    				
+////	    				date = data.date[j]
+//	    			}
+//	    		}
+//	    		
+//	    		++j;
+////	    		--j;
+//    		}
+//    	
+//    	
+//    	if(x == false)
+//    		{
+//    		console.log(x);
+//    			$("#clockInInput").hide();
+//    		}
+//    	else
+//    		{	
+//    		console.log(x);
+//    			$("#clockOutInput").hide();
+//    		}
+//			
+//    },
+//    dataType : 'json'
+//});
+
+
+
 $.ajax({
 	type: 'get',
     url: '/GetEntry',
     success: function (data, status, xhr) {
     	
     	let x = true;
+    	
     	let j = 1;
+//    	let count = 0;
 
-    	for(let i = 0; i <data.user.length;i++)
+//    	let j = (data.user.length) - 2;
+//    	for(let i = (data.user.length-1) ; i >= 0  ;i--)
+    	for(let i = 0 ; i <  data.user.length;i++)
     		{
-    		if(i == 0)
-    			{
-    			$('.tabcont').append('<tbody><tr><th colspan="5">'+data.date[i]+'</th><tr></tbody>')
-    			}
+//    		if(i == (data.user.length) - 1)
+//    			{
+//    			$('.tabcont').append('<tbody><tr><th colspan="5">'+data.date[i]+'</th><tr></tbody>')
+//    			}
     		
 	    		if(data.user == null)
 	    		{
@@ -32,25 +113,17 @@ $.ajax({
 	    		}
 	    	else
 	    		{
-	    		$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
 	    		
+	    		
+	    		$('.tabcont').prepend('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
+//	    		console.log(data.diffInHours[i]+'   '+data.diffInMins[i]+'    '+data.diffInSecs[i]+'  '+i+'   '+count);++count;
 	    		//.tabcont
-	    			if(data.date[j - 1] != data.date[j] && j < data.user.length)
+	    			if(data.date[j - 1] != data.date[j] && j >= 0)
 	    			{
+	    							
+	    					$('.tabcont').prepend('<tbody><tr id= "current"><th colspan="5">'+data.date[j-1]+'</th><tr></tbody>')
 	    				
-	    				if(data.date[j] == undefined)
-	    					{
-	    					
-//	    					check = true;
-	    					$('.tabcont').prepend('<tbody><tr id = "current"><th colspan="5">'+date+'</th><tr></tbody>')
-	    					}
-	    				else
-	    					{
-	    					$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
-	    					}
-//	    				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
-	    				
-//	    				date = data.date[j]
+	    				date = data.date[j - 1]
 	    			}
 	    		}
 	    		
@@ -105,10 +178,25 @@ $('#clockInInput').click(function(){
 //			}
 //				$('.tabcont').prepend('<tr><td>'+data.userList.project+'</td><td>'+data.userList.taskDescription+'</td><td>'+data.userList.clockIn+'</td><td class = "clockout">'+data.userList.clockOut+'</td><td class = "totalHours"></td></tr>');
 			
+			
+			
+			if(date != data.date)
+			{
+				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+date+'</th><tr></tbody>')
+				
+				date = data.date;
+				
+				console.log('test  '+date+'   '+data.date);
+			}
+			
+			
+			
 			$('.tabcont').prepend('<tr><td>'+data.userList.project+'</td><td>'+data.userList.taskDescription+'</td><td>'+data.userList.clockIn+'</td><td class = "clockout">'+data.userList.clockOut+'</td><td class = "totalHours"></td></tr>');
 			
 			$('#current').remove();
 			$('.tabcont').prepend('<tbody><tr id = "current"><th colspan="5">'+date+'</th><tr></tbody>')
+			
+			console.log('new test '+date+'    '+data.date);
 			}
 		
 	},'json');
@@ -166,10 +254,10 @@ $(function () {
             	$('.tabcont tbody').remove();
             	for(let i = 0; i <data.user.length;i++)
             		{
-            		if(i == 0)
-            			{
-            			$('.tabcont').append('<tbody><tr><th colspan="5">'+data.date[i]+'</th><tr></tbody>')
-            			}
+//            		if(i == 0)
+//            			{
+//            			$('.tabcont').append('<tbody><tr><th colspan="5">'+data.date[i]+'</th><tr></tbody>')
+//            			}
             		
         	    		if(data.user == null)
         	    		{
@@ -185,12 +273,12 @@ $(function () {
         	    		}
         	    	else
         	    		{
-        	    		$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
+        	    		$('.tabcont').prepend('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
         	    		
-        	    		//.tabcont
-        	    			if(data.date[j - 1] != data.date[j] && j < data.user.length)
+        	    		//.tabcont  < data.user.length
+        	    			if(data.date[j - 1] != data.date[j] && j >= 0)
         	    			{
-        	    				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j]+'</th><tr></tbody>')
+        	    				$('.tabcont').prepend('<tbody><tr><th colspan="5">'+data.date[j - 1]+'</th><tr></tbody>')
         	    			}
         	    		}
         	    		
