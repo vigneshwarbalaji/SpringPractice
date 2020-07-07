@@ -1,7 +1,8 @@
 package com.org.action;
 
 import java.io.IOException;
-
+import java.security.GeneralSecurityException;
+import java.util.Collections;
 //import java.io.PrintWriter;
 import java.util.HashMap;
 
@@ -21,11 +22,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.auth.openidconnect.IdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.impl.Session;
 import com.org.dao.UserService;
 import com.org.dao.UserServiceImpl;
 import com.org.model.UserAccountDetail;
 import com.org.model.UserAccounts;
+
+
 
 
 
@@ -37,6 +48,11 @@ import com.org.model.UserAccounts;
 
 @Controller
 public class ControllerServlet  {
+	private static final String CLIENT_ID = "1057523589135-9gb46eembt589ce228tfbetn8nhvmqkn.apps.googleusercontent.com";
+	
+	  private static final HttpTransport TRANSPORT = new NetHttpTransport();
+	  private static final JacksonFactory JSON_FACTORY = new JacksonFactory();
+
 	//private static final long serialVersionUID = 1L;
 	UserService dao = new UserServiceImpl();
 	
@@ -188,5 +204,101 @@ public class ControllerServlet  {
 		
 		return obj;
 	}
+	
+
+	@RequestMapping(value = "/googleSignUp",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody String googleSignUp(HttpServletRequest request,HttpServletResponse response) throws IOException
+	{
+		
+//		String id_token = googleUser.getAuthResponse().id_token;
+		
+		HttpSession session = request.getSession(false);
+		
+		HashMap<String,Object>map = new HashMap<String, Object>();
+//		HttpTransport transport = null;
+//		JsonFactory jsonFactory = null;
+
+		if(session == null)
+		{
+			GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(TRANSPORT,JSON_FACTORY)
+				    // Specify the CLIENT_ID of the app that accesses the backend:
+				    .setAudience(Collections.singletonList(CLIENT_ID))
+				    // Or, if multiple clients access the backend:
+				    //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+				    .build();
+
+				// (Receive idTokenString by HTTPS POST)
+				
+				String idTokenString = request.getParameter("googleToken");
+
+				GoogleIdToken idToken = null;
+				try {
+					idToken = verifier.verify(idTokenString);
+				} catch (GeneralSecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (idToken != null) {
+				  Payload payload = idToken.getPayload();
+
+				  // Print user identifier
+				  String userId = payload.getSubject();
+				  System.out.println("User ID: " + userId);
+
+				  // Get profile information from payload
+				  String email = (String) payload.get("email");
+				  boolean emailVerified = Boolean.valueOf(((com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload) payload).getEmailVerified());
+				  String name = (String) payload.get("name");
+//				  String pictureUrl = (String) payload.get("picture");
+//				  String locale = (String) payload.get("locale");
+//				  String familyName = (String) payload.get("family_name");
+//				  String givenName = (String) payload.get("given_name");
+
+				  // Use or store profile information
+				  // ...
+				  UserAccounts users = new UserAccounts();
+				  boolean result = false;
+				  
+				  	users.setId(null);
+					users.setName(name);
+					users.setEmail(email);
+					
+					result = dao.createUserAcc(users);
+					
+					if(result == true)
+					{
+						System.out.println(users.getEmail());
+						session.setAttribute("email",users.getEmail());
+						session.setAttribute("name",users.getName());
+						map.put("value","true");
+					}
+					else
+					{
+						session.setAttribute("email",users.getEmail());
+						session.setAttribute("name",users.getName());
+						map.put("value","true");
+					}
+
+				} else {
+					
+					map.put("value","false");
+				  System.out.println("Invalid ID token.");
+				}
+		}
+		else
+		{
+			map.put("value","true");
+		}
+
+
+
+		String obj = new ObjectMapper().writeValueAsString(map);
+		
+		return obj;
+		
+	}
+
+	
+	
 }
 	

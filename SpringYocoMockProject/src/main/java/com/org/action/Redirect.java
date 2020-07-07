@@ -17,4 +17,10 @@ public class Redirect
     {  
         return "Dashboard";  
     }
+	
+	/*@RequestMapping("/Login")  
+    public String loginRedirect()  
+    {  
+        return "/";  
+    }*/
 }

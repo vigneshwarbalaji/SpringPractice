@@ -13,6 +13,13 @@
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
     
+    <meta name="google-signin-client_id" content="1057523589135-9gb46eembt589ce228tfbetn8nhvmqkn.apps.googleusercontent.com">     
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
+    
+    
+      <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="css\newstyle.css">
 </head>
@@ -120,6 +127,25 @@
     	<input type="submit" name="" value="Logout">
     </form>
     </div>
+    
+    <a href="#" onclick="signOut();">Sign out</a>
+	<script>
+  	function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+      
+      window.location.href = '/';
+    });
+  }
+  	
+    function onLoad() {
+        gapi.load('auth2', function() {
+          gapi.auth2.init();
+        });
+      }
+
+</script>
     
     <div class="bluey" id="task" align="center">
         <input type="button" id="burst" name="" value="burst">
