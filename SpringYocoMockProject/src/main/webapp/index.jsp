@@ -14,21 +14,30 @@
         <h2>Login</h2>
         <!-- <form> -->
         
-        <div align="center" id = "googleSign" class="g-signin2" data-onsuccess="onSignIn"></div>
+        <div align="center" onclick="ClickLogin()" class="g-signin2" data-onsuccess="onSignIn"></div>
         
         
         <script>
+        
+        var clicked=false;//Global Variable
+        function ClickLogin()
+        {
+            clicked=true;
+        }
+        
         function onSignIn(googleUser){
-        	
+        
+        	if(clicked)
+        	{
             var profile = googleUser.getBasicProfile();
 
         	var id_token = googleUser.getAuthResponse().id_token;
             	
-        	console.log("cat");
+        	//console.log("cat");
         	console.log("test 1"+id_token);
                 $.ajax({
                 	type: 'POST',
-                    url: '/googleSignUp',
+                    url: '/googleSignIn',
                     
                     
         				data:{
@@ -49,11 +58,15 @@
                     	{
                     		window.location.href = '/Dashboard';
                     	}
+                    	else
+                    	{
+                    		$('#name').html('<h6>'+'User doesnot exist.Plz SignUp'+'<h6>');
+                    	}
                     	
                     },
                     dataType : 'json'
                 });
-            
+        	}   
         };
         </script>
         
