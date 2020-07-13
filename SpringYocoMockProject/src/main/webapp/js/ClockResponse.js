@@ -88,6 +88,14 @@ $.ajax({
     	let x = true;
     	
     	let j = 1;
+    	
+/*    	<div class = "adjustment" id="addAdjustments" align="right">
+		<span class="material-icons">
+			add_circle_outline
+		</span>
+	</div>
+    */	
+    	
 //    	let count = 0;
 
 //    	let j = (data.user.length) - 2;
@@ -96,7 +104,7 @@ $.ajax({
     		{
     		if(i == 0)
     			{
-    			$('.tabcont').append('<tbody><tr><th colspan="5"></th><tr></tbody>')
+    			$('.tabcont').append('<tbody><tr><th colspan="5"></th></tr></tbody>')
     			}
     		
 	    		if(data.user == null)
@@ -121,7 +129,7 @@ $.ajax({
 	    			if(data.date[j - 1] != data.date[j] && j >= 0)
 	    			{
 	    							
-	    					$('.tabcont').prepend('<tbody><tr id= "current"><th colspan="5">'+data.date[j-1]+'</th><tr></tbody>')
+	    					$('.tabcont').prepend('<tbody><tr id= "current"><th colspan="5">'+data.date[j-1]+'<div class = "adjustment" id="addAdjustments" align="right"><span class="material-icons">add_circle_outline</span></div></th><tr></tbody>')
 	    				
 	    				date = data.date[j - 1]
 	    			}
@@ -374,4 +382,48 @@ $.ajax({
 			
     },
     dataType : 'json'
+});
+
+
+
+
+
+$(function () {
+    $('th .adjustment').on('click',function () {
+//    	check = false;
+    	
+//    	var zone = $('#zone').val();
+//    	console.log(zone);
+    	
+    	// Get the modal
+    	var modal = document.getElementById("myModal");
+
+    	// Get the button that opens the modal
+//    	var btn = document.getElementById("myBtn");
+
+    	// Get the <span> element that closes the modal
+    	var span = document.getElementsByClassName("close")[0];
+    	
+    	  modal.style.display = "block";
+    	  
+    	  span.onclick = function() {
+    		  modal.style.display = "none";
+    	  }
+    	  
+    	  window.onclick = function(event) {
+    		  if (event.target == modal) {
+    		    modal.style.display = "none";
+    		  }
+    	  }
+    	
+        $.ajax({
+//        	type: 'PUT',
+//            url: '/UpdateEntry',
+//            data :{ zone : $('#zone').val()},
+            success: function (data, status, xhr) {
+            	
+            },
+            dataType : 'json'
+        });
+    });
 });

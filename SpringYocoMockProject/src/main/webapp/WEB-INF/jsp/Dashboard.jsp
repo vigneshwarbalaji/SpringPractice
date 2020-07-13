@@ -14,6 +14,7 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="css\newstyle.css">
+    <link rel="stylesheet" type="text/css" href="css\Adjustment.css">
 </head>
 
 <body>
@@ -65,10 +66,36 @@
         <strong>Entries</strong>
     </div>-->
   
-    <span class="material-icons" id="i0">
+  <!--  <div class = "adjustment" id="addAdjustments" align="right">
+    <span class="material-icons">
         add_circle_outline
     </span>
+    </div> -->
     
+    <div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <!--<p>Some text in the Modal..</p>-->
+    <h1>Adjustments</h1><br>
+    
+    <label>Clock In:</label>
+    <input type="date" id="startDate" value="2018-07-22">
+    <input type="time" id="inTime" value=""><br><br>
+    <label>Clock Out:</label>
+    <input type="date" id="stopDate" value="2018-07-22">
+    <input type="time" id="outTime" value=""><br><br>
+    
+    <label>Project:</label><br>
+    <input type="text" id="upPro" value=""><br><br>
+    <label>Description:</label><br>
+    <input type="text" id="upDes" value=""><br><br>
+    
+    <div class="bluey" class="adjust">
+    <input type="submit" id="upSave" value="Save"><br>
+    </div>
+  </div>
+    </div>
     
     <br><br>
     
@@ -86,7 +113,20 @@
             <th id="th2">Project</th>
             <th id="th3">clock-In</th>
             <th id="th4">clock-out</th>
-            <th id="th5">Total Hours</th>
+            <th id="th5">Total Hours
+            
+            <!-- 
+              <div class = "adjustment" id="addAdjustments" align="right">
+    			<span class="material-icons">
+        			add_circle_outline
+    			</span>
+    		</div>
+    		<div class = "adjustment" id="addAdjustments" align="right">
+    			<span class="material-icons">
+        			add_circle_outline
+    			</span>
+    		</div> -->
+            </th>
         </tr>
         
      </thead>
