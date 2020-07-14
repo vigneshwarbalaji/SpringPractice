@@ -15,4 +15,10 @@ public interface UserService {
 	//List<UserAccountDetail> getAccountDetailList(String email);
 	String milliSecToDateConversion(long millisec,String zones);
 	public List<UserAccountDetail> getAccountListByMail(String email);
+	
+	public long timeAndDateToMillis(String myDate);
+	
+	public boolean getOverlappingTimings(String email,long startMilli,long stopMilli);
+	
+//	public long timeAndDateToMillis(String myDate);
 }

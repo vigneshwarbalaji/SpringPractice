@@ -389,8 +389,43 @@ $.ajax({
 
 
 $(function () {
-    $('th .adjustment').on('click',function () {
+    $('.tabcont').on('click','.adjustment',function () {
 //    	check = false;
+    	
+    	var test = $(this).closest('tr').find('th').text().substr(0, 10);
+//    	test
+    	
+//    	$('#startDate').val('09-06-2020');
+//    	$('#stopDate').val('09-06-2020');
+//    	$('#startDate').setDate(test);
+//    	$('#stopDate').setDate(test);
+    	
+//    	var date= test;
+    	console.log(test);
+    	
+    	var newdate = dateFormatting(test);
+//    	var date = test;
+//    	var d = new Date(date.split("-").reverse().join("-"));
+//    	var dd = ('0'+d.getDate()).slice(-2);
+//    	var mm = ('0'+(d.getMonth()+1)).slice(-2);
+//    	var yyyy = d.getFullYear();
+//    	var newdate = yyyy+"-"+mm+"-"+dd;
+    	
+    	console.log(newdate);
+    	
+//    	dateFormatting(test)
+    	
+    	
+//    	$('#stopDate').attr('minDate',);
+    	
+    	$('#startDate').val(newdate);
+    	$('#stopDate').val(newdate);
+    	
+//    	var setStart = $('#startDate').val();
+//    	var attributeMin = dateFormatting(setStart); 
+//    	console.log(attributeMin);
+//    	$('#stopDate').attr('minDate',attributeMin);
+    	
     	
 //    	var zone = $('#zone').val();
 //    	console.log(zone);
@@ -415,15 +450,126 @@ $(function () {
     		    modal.style.display = "none";
     		  }
     	  }
+    	  
+      $('#upSave').on('click',function ()
+    	{
+    		  
+    			  
+    	  
+    	  let startDate = $('#startDate').val();
+    	  let stopDate = $('#stopDate').val();
+    	  let inTime = $('#inTime').val();
+    	  let outTime = $('#outTime').val();
+    	  let upPro = $('#upPro').val();
+    	  let upDes = $('#upDes').val();
     	
-        $.ajax({
-//        	type: 'PUT',
-//            url: '/UpdateEntry',
-//            data :{ zone : $('#zone').val()},
-            success: function (data, status, xhr) {
-            	
-            },
-            dataType : 'json'
+//    	  modal.style.display = "none";
+    	  
+    	  if(inTime == outTime)
+    	  {
+    		  $('#adjustAlert').html('<h6>clockIn and clockOut time cannot be same</h6>');
+    	  }
+    	  else if(startDate == null||stopDate == null||inTime == null||outTime == null||upPro == null||upDes == null)
+    	  {
+    		  $('#adjustAlert').html('<h6>Please enter the adjustment message</h6>');
+    	  }
+    	  else
+    	  {
+    		  $.ajax({
+    	        	type: 'POST',
+    	            url: '/addAdjust',
+    	            data :{ start : startDate,stop : stopDate,inClk : inTime,outClk : outTime,pro:upPro,des:upDes},
+    	            success: function (data, status, xhr) {
+    	            	
+    	            	if(data.isOverLappingExist == 'true')
+    	            	{
+    	            		$('#adjustAlert').html('<h6>Adjusted time overlaps with already existing entry</h6>');
+    	            	}
+    	            	else if(data.isThisNegativeValue == 'true')
+    	            	{
+    	            		$('#adjustAlert').html('<h6>ClockIn Time cannot be greater than ClockOut Time</h6>');
+    	            	}
+    	            	else if(data.adjustmentCreated == 'true')
+    	            	{
+    	            		modal.style.display = "none";
+    	            		
+    	            		$.ajax({
+    	                    	type: 'GET',
+    	                        url: '/GetEntry',
+    	                        data :{ zone : $('#zone').val()},
+    	                        success: function (data, status, xhr) {
+    	                        	
+    	                        	let x = true;
+    	                        	let j = 1;
+    	                        	$('.tabcont tbody').remove();
+    	                        	for(let i = 0; i <data.user.length;i++)
+    	                        		{
+    	                        		if(i == 0)
+    	                        			{
+    	                        			$('.tabcont').append('<tbody><tr><th colspan="5"></th><tr></tbody>')
+    	                        			}
+    	                        		
+    	                        		
+    	                    	    		if(data.user == null)
+    	                    	    		{
+    	                    	    			$("#clockOutInput").hide();
+    	                    	    		}
+    	                    	    	else if(data.user[i].clockOut == "ongoing")
+    	                    	    		{
+    	                    	    			x = false;
+    	                    	    			
+    	                    	    			$('.tabcont').append('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td class = "clockout">'+data.user[i].clockOut+'</td><td class = "totalHours"></td></tr>');
+    	                    	    			
+    	                    	    		}
+    	                    	    	else
+    	                    	    		{
+    	                    	    			$('.tabcont').prepend('<tr><td>'+data.user[i].project+'</td><td>'+data.user[i].taskDescription+'</td><td>'+data.user[i].clockIn+'</td><td>'+data.user[i].clockOut+'</td><td>'+data.diffInHours[i]+'h'+data.diffInMins[i]+'m'+data.diffInSecs[i]+'s'+'</td></tr>');
+
+    	                    	    			if(data.date[j - 1] != data.date[j] && j >= 0)
+    	                    	    			{
+    	                    	    				$('.tabcont').prepend('<tbody><tr id = "current"><th colspan="5">'+data.date[j - 1]+'</th><tr></tbody>')
+    	                    	    				date = data.date[j - 1];
+    	                    	    			}
+    	                    	    		}
+    	                    	    		
+    	                    	    		++j;
+    	                        		}
+    	                        	
+    	                        	
+    	                        	if(x == false)
+    	                        		{
+    	                        		console.log(x);
+    	                        			$("#clockInInput").hide();
+    	                        		}
+    	                        	else
+    	                        		{	
+    	                        		console.log(x);
+    	                        			$("#clockOutInput").hide();
+    	                        		}
+    	                        },
+    	                        dataType : 'json'
+    	                    });
+    	            	}
+    	            },
+    	            dataType : 'json' 
+    		  });
+    	  }
         });
     });
 });
+
+
+
+function dateFormatting(test)
+{
+	console.log(test)
+	var date = test;
+	var d = new Date(date.split("-").reverse().join("-"));
+	var dd = ('0'+d.getDate()).slice(-2);
+	var mm = ('0'+(d.getMonth()+1)).slice(-2);
+	var yyyy = d.getFullYear();
+	var newdate = yyyy+"-"+mm+"-"+dd
+	
+	return newdate;
+}
+

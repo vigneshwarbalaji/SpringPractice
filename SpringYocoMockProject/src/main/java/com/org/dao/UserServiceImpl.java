@@ -1,16 +1,20 @@
 package com.org.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import org.springframework.stereotype.Service;
 
 import com.googlecode.objectify.ObjectifyService;
-
+//import com.org.action.Date;
 import com.org.model.UserAccountDetail;
 import com.org.model.UserAccounts;
 
@@ -133,6 +137,42 @@ public class UserServiceImpl implements UserService
 	{
 		List<UserAccountDetail>UserDetailList = ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email ==",email).list();
 		return UserDetailList;
+	}
+	
+//	public long timeAndDateToMillis(String myDate)
+//	{
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+//		Date date = sdf.parse(myDate);
+//		long millis = date.getTime();
+//	}
+	
+	
+	public long timeAndDateToMillis(String myDate)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date date = null;
+		try {
+			date = sdf.parse(myDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long millis = date.getTime();
+		
+		return millis;
+	}
+
+	public boolean getOverlappingTimings(String email,long startMilli,long stopMilli)
+	{
+		boolean checkExistTimings = false;
+		UserAccountDetail existingTimings = ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email",email).filter("clockIn >= ",startMilli).filter("clockOut <= ",stopMilli).first().now();
+        
+		if(existingTimings != null)
+		{
+			checkExistTimings = true;
+		}
+		
+        return checkExistTimings;
 	}
 	
 }

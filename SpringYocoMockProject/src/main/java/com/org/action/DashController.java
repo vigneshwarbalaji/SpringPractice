@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -333,11 +335,88 @@ public String logOut(HttpServletRequest request,HttpServletResponse response) th
 	return "redirect:/";
 }
 
+@RequestMapping(value = "/addAdjust",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+public @ResponseBody String addAdjust(HttpServletRequest request,HttpServletResponse response) throws IOException
+{
+	String startDate = request.getParameter("start");
+	String stopDate = request.getParameter("stop");
+	String inTime = request.getParameter("inClk");
+	String outTime = request.getParameter("outClk");
+	String project = request.getParameter("pro");
+	String description = request.getParameter("des");
+	
+	HttpSession session = request.getSession(false);
+	
+	String name = session.getAttribute("name").toString();
+	String email = session.getAttribute("email").toString();
+	
+	HashMap<String,Object>map = new HashMap<String, Object>();
+	
+//	System.out.println(startDate+" "+stopDate+" "+inTime+" "+outTime+" "+project+" "+" "+description);
+	
+	String myStartDate = startDate+" "+inTime;
+	String myStopDate  = stopDate+" "+outTime;
+//	String myDate = "2014/10/29 18:10:45";
+//	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+//	Date date = sdf.parse(myDate);
+//	long millis = date.getTime();
+	long startmilli = dao.timeAndDateToMillis(myStartDate);
+	long stopmilli = dao.timeAndDateToMillis(myStopDate);
+	
+	long res = stopmilli - startmilli;
+//	Out Specification Cannot be lesser than the start specification
+	
+	boolean isOverLappingExist = dao.getOverlappingTimings(email, startmilli, stopmilli);
+	
+	if(isOverLappingExist == true)
+	{
+		map.put("isOverLappingExist","true");
+	}
+	else
+	{
+		if(res < 0)
+		{
+			map.put("isThisNegativeValue","true");
+		}
+		else
+		{
+			UserAccountDetail accDetails = new UserAccountDetail();
+			
+			accDetails.setId(null);
+			accDetails.setEmail(email);
+			accDetails.setClockIn(String.valueOf(startmilli));
+			accDetails.setClockOut(String.valueOf(stopmilli));
+			accDetails.setProject(project);
+			accDetails.setTaskDescription(description);
+			
+			dao.createUserAccDetails(accDetails);
+			
+			map.put("adjustmentCreated", "true");
+		}
+	}
+	
+	String obj = new ObjectMapper().writeValueAsString(map);
+	
+	return obj;
+
+}
 
 
 
-
-
+//public long timeAndDateToMillis(String myDate)
+//{
+//	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+//	Date date = null;
+//	try {
+//		date = sdf.parse(myDate);
+//	} catch (ParseException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//	long millis = date.getTime();
+//	
+//	return millis;
+//}
 
 
 }

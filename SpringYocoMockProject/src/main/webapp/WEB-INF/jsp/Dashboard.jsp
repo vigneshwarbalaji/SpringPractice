@@ -79,12 +79,14 @@
     <!--<p>Some text in the Modal..</p>-->
     <h1>Adjustments</h1><br>
     
+    <p id = 'adjustAlert'></p><br><br>
+    
     <label>Clock In:</label>
-    <input type="date" id="startDate" value="2018-07-22">
-    <input type="time" id="inTime" value=""><br><br>
+    <input type="date" id="startDate" value = "2020-01-01" >
+    <input type="time" id="inTime" ><br><br>
     <label>Clock Out:</label>
-    <input type="date" id="stopDate" value="2018-07-22">
-    <input type="time" id="outTime" value=""><br><br>
+    <input type="date" id="stopDate" value = "2020-01-01" >
+    <input type="time" id="outTime"><br><br>
     
     <label>Project:</label><br>
     <input type="text" id="upPro" value=""><br><br>
