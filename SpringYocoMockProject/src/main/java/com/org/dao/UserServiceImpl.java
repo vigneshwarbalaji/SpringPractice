@@ -164,13 +164,27 @@ public class UserServiceImpl implements UserService
 
 	public boolean getOverlappingTimings(String email,long startMilli,long stopMilli)
 	{
+		System.out.println("Test In USI:"+email+" "+startMilli+" "+stopMilli);
+		
+//		String.valueOf(startMilli)
+//		String.valueOf(stopMilli)
+		
 		boolean checkExistTimings = false;
-		UserAccountDetail existingTimings = ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email",email).filter("clockIn >= ",startMilli).filter("clockOut <= ",stopMilli).first().now();
-        
-		if(existingTimings != null)
+		UserAccountDetail existingInTimings = ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email",email).filter("clockIn>=",startMilli).first().now();
+		UserAccountDetail existingOutTimings = ObjectifyService.ofy().load().type(UserAccountDetail.class).filter("email",email).filter("clockOut<=",stopMilli).first().now();
+		
+		System.out.println("existingInTime"+existingInTimings);
+		System.out.println("existingOutTime"+existingOutTimings);
+		
+		if(existingInTimings != null &&  existingOutTimings != null)
 		{
 			checkExistTimings = true;
 		}
+		
+//		if((existingInTimings.getClockIn().equals(existingOutTimings.getClockIn())) && (existingInTimings.getClockOut().equals(existingOutTimings.getClockOut())))
+//		{
+//			checkExistTimings = true;
+//		}
 		
         return checkExistTimings;
 	}

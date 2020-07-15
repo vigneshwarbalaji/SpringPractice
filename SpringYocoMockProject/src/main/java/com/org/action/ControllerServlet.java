@@ -1,6 +1,7 @@
 package com.org.action;
 
 import java.io.IOException;
+
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 //import java.io.PrintWriter;
@@ -69,6 +70,13 @@ public class ControllerServlet  {
 //		return "/ControllerServlet";
 //	}
 	
+	
+//	HttpServletRequest request;
+//	HttpServletResponse response;
+	
+//	HttpServletRequest request,HttpServletResponse response
+	
+	
 	@RequestMapping(value = "/ControllerServlet",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String signIn(HttpServletRequest request,HttpServletResponse response) throws IOException
 	{
@@ -84,11 +92,9 @@ public class ControllerServlet  {
 		if(email.isEmpty()||pass.isEmpty())
 		{
 			map.put("value","please fill all the details");
-			//response.getWriter().print("<h6>please fill all the details</h6>");
 		}
 		else
 		{
-//			UserService dao = (UserService) this.getServletContext().getAttribute("dao");
 			
 			UserAccounts userAcc = dao.getUserByMail(email);
 			
@@ -96,37 +102,18 @@ public class ControllerServlet  {
 			if(userAcc == null)
 			{
 				map.put("value","User doesnot exist.Please register.");
-				//response.getWriter().print("<h6>User doesnot exist.Please register.</h6>");
 			}
 			else if(!(userAcc.getPassword().equals(pass)))
 			{
 				map.put("value","Password incorrect");
-				//response.getWriter().print("<h6>Password incorrect</h6>");
 			}
 			else
 			{	
 				session = request.getSession(true);
 				session.setAttribute("email", userAcc.getEmail());
 				session.setAttribute("name", userAcc.getName());
-				//System.out.println(userAcc.getEmail());
-				
-				//response.getWriter().print("true");		
+						
 				map.put("value","true");
-				
-				//return "/Dashboard";
-				
-//				UserAccountDetail userdetail = dao.getAccountDetailByMail(email);
-				
-//				ObjectMapper objectMapper = new ObjectMapper();
-
-				
-//				objectMapper.writeValueAsString(userdetail);
-//				
-//				return objectMapper; 
-				
-//				map.put("userdetail", userdetail);
-				
-//				map.put("userdetail",userdetail);
 			}
 		}
 		
@@ -429,6 +416,10 @@ public class ControllerServlet  {
 		
 	}
 
+	public int getLucky() {
+        return 7;
+    }
+	
 
 	
 }

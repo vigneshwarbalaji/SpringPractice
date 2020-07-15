@@ -464,6 +464,7 @@ $(function () {
     	  let upDes = $('#upDes').val();
     	
 //    	  modal.style.display = "none";
+//    	  data :{ zone : $('#zone').val()},
     	  
     	  if(inTime == outTime)
     	  {
@@ -478,7 +479,7 @@ $(function () {
     		  $.ajax({
     	        	type: 'POST',
     	            url: '/addAdjust',
-    	            data :{ start : startDate,stop : stopDate,inClk : inTime,outClk : outTime,pro:upPro,des:upDes},
+    	            data :{zone : null, start : startDate,stop : stopDate,inClk : inTime,outClk : outTime,pro:upPro,des:upDes},
     	            success: function (data, status, xhr) {
     	            	
     	            	if(data.isOverLappingExist == 'true')
@@ -496,7 +497,7 @@ $(function () {
     	            		$.ajax({
     	                    	type: 'GET',
     	                        url: '/GetEntry',
-    	                        data :{ zone : $('#zone').val()},
+    	                        data :{ zone : null},
     	                        success: function (data, status, xhr) {
     	                        	
     	                        	let x = true;

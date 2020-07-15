@@ -366,6 +366,8 @@ public @ResponseBody String addAdjust(HttpServletRequest request,HttpServletResp
 	long res = stopmilli - startmilli;
 //	Out Specification Cannot be lesser than the start specification
 	
+	System.out.println("DC Test: "+email+" "+startmilli+" "+stopmilli);
+	
 	boolean isOverLappingExist = dao.getOverlappingTimings(email, startmilli, stopmilli);
 	
 	if(isOverLappingExist == true)
