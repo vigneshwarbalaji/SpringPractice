@@ -25,5 +25,10 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/testingJar/appengine-api-1.0-sdk-1.9.76.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/testingJar/appengine-api-labs-1.6.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/testingJar/appengine-api-stubs-1.9.76.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/testingJar/appengine-testing-1.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vigneshwar balaji/Desktop/testingJar/appengine-tools-sdk-1.9.76.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
