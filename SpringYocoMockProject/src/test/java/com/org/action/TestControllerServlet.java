@@ -59,6 +59,8 @@ public class TestControllerServlet
 	public void testSignIn() 
 	{
 		assertEquals("please fill all the details",s.signIn("",""));
+		assertEquals("please fill all the details",s.signIn("","password"));
+		assertEquals("please fill all the details",s.signIn("run@gmail.com",""));
 		assertEquals("User doesnot exist.Please register.",s.signIn("new","password"));
 		assertEquals("Password incorrect",s.signIn("run@gmail.com","passjvnfjvnj"));
 		assertEquals("success",s.signIn("abc@gmail.com","password"));
@@ -68,6 +70,10 @@ public class TestControllerServlet
 	public void testSignUp() 
 	{
 		assertEquals("please fill all the details", s.signUp("","", "", ""));
+		assertEquals("please fill all the details", s.signUp("run","", "", ""));
+		assertEquals("please fill all the details", s.signUp("","run@gmail.com", "", ""));
+		assertEquals("please fill all the details", s.signUp("run","run@gmail.com", "password", ""));
+		assertEquals("please fill all the details", s.signUp("run","run@gmail.com", "", "password"));
 		assertEquals("Password doesn't match", s.signUp("run","run@gmail.com","password", "passward"));
 		assertEquals("Password doesn't match", s.signUp("run","run@gmail.com","passworffvfdvf", "passward"));
 		assertEquals("Password doesn't match", s.signUp("run","run@gmail.com","password", "passwardhjhjbhjbhj"));
